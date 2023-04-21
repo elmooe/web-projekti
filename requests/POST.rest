@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/beers 
+Content-Type: application/json
+
+{
+    "name": "pirkka 3",
+    "type": "ale",
+    "brewery": "olvi",
+    "percentage": "4,7",
+    "hopness": "17"
+}
