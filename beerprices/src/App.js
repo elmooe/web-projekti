@@ -4,7 +4,6 @@ import Filter from './components/Filter'
 import BeerFrom from './components/BeerForm'
 import { Beer } from './components/Beer'
 import beerService from './services/beerService'
-import Notification from './components/Notification'
 
 const App = () => {
   const [beers, setBeers] = useState([]) 
@@ -14,8 +13,6 @@ const App = () => {
   const [newPercentage, setNewPercentage] = useState('')
   const [newHopness, setNewHopness] = useState('')
   const [filteredName, setFilteredName] = useState('')
-  const [notificationMessage, setNotificationMessage] = useState('')
-  const [notificationStyle, setNotificationStyle] = useState('')
 
   useEffect(() => {
     beerService
@@ -50,26 +47,20 @@ const App = () => {
 
   const addBeer = (event) => {
     event.preventDefault()
-    const personToUpdateNumber = beers.find(person => person.name === newName)
-    if (beers.some(person => person.name === newName)) {
-      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
-        const replacedNumber = {...personToUpdateNumber, number: newType}
+    const beerToUpdate = beers.find(beer => beer.name === newName)
+    if (beers.some(beer => beer.name === newName)) {
+      if (window.confirm(`${newName} update info?`)) {
+        const replacedBeer = {...beerToUpdate, type: newType, brewery: newBrevery, percentage: newPercentage, hopness: newHopness }
   
         beerService
-        .updateBeer(personToUpdateNumber.id, replacedNumber)
-        .then(returnedPerson => {
-          setBeers(beers.map(person => person.id !== personToUpdateNumber.id ? person : returnedPerson))
-          setNotificationMessage(`${personToUpdateNumber.name}'s number has been changed`)
-          setNotificationStyle('green')
-          setTimeout(() => {
-            setNotificationMessage('')
-          }, 3000)
-  
+        .updateBeer(beerToUpdate.id, replacedBeer)
+        .then(returnedBeer => {
+          setBeers(beers.map(beer => beer.id !== beerToUpdate.id ? beer : returnedBeer))
           setNewName('')
-        setNewType('')
-        setNewBrewery('')
-        setNewPercentage('')
-        setNewHopness('')
+          setNewType('')
+          setNewBrewery('')
+          setNewPercentage('')
+          setNewHopness('')
         })
       } else {
         setNewName('')
@@ -88,12 +79,6 @@ const App = () => {
       .create(newBeer)
       .then(createdBeer => {
         setBeers(beers.concat(createdBeer))
-        setNotificationMessage(`Added ${newBeer.name}`)
-        setNotificationStyle('green')
-        setTimeout(() => {
-          setNotificationMessage('')
-        }, 3000)
-  
         setNewName('')
         setNewType('')
         setNewBrewery('')
@@ -102,12 +87,6 @@ const App = () => {
       })
       .catch(error => {
         console.log(error.response.data)
-        setNotificationMessage(`Beer validation failed: ${JSON.stringify(error.response.data)}`)
-        setNotificationStyle('red')
-        setTimeout(() => {
-          setNotificationMessage('')
-        }, 3000)
-  
         setNewName('')
         setNewType('')
         setNewBrewery('')
@@ -124,26 +103,16 @@ const App = () => {
       beerService
       .deleteBeer(choosedBeer.id)
       .then(() => {
-        setNotificationMessage(`${choosedBeer.name}'s has been deleted`)
-        setNotificationStyle('green')
-        setTimeout(() => {
-          setNotificationMessage('')
-        }, 3000)
         setBeers(beers.filter(beer => beer.id !== id))
       })
       .catch(error => {
-        setNotificationMessage(`Information of ${choosedBeer.name} has already been removed from server`)
-        setNotificationStyle('red')
-        setTimeout(() => {
-          setNotificationMessage('')
-        }, 3000)
+        console.log(error)
       })
     }
   }
 
   const editBeer = (id) => {
     const beerToEdit = beers.find(beer => beer.id === id)
-    //setEditMode(true)
     setNewName(beerToEdit.name)
     setNewType(beerToEdit.type)
     setNewBrewery(beerToEdit.brewery)
@@ -157,9 +126,8 @@ const App = () => {
   return (
     <div>
       <h2>Check the prices of beers</h2>
-      <Notification message={notificationMessage} style={notificationStyle}/>
       <Filter filteredName={filteredName} handleFilter={handleFilter} />
-      <h2>Add a new beer</h2>
+      <h2>Add new beer</h2>
       <BeerFrom addBeer={addBeer} newName={newName} handleNewName={handleNewName}
                   newType={newType} handleNewType={handleNewType}
                   newBrewery={newBrevery} handleNewBrewery={handleNewBrewery}
