@@ -126,14 +126,14 @@ const App = () => {
   return (
     <div>
       <h2>Check the prices of beers</h2>
-      <Filter filteredName={filteredName} handleFilter={handleFilter} />
-      <h2>Add new beer</h2>
+      <h4>Add new beer</h4>
       <BeerFrom addBeer={addBeer} newName={newName} handleNewName={handleNewName}
                   newType={newType} handleNewType={handleNewType}
                   newBrewery={newBrevery} handleNewBrewery={handleNewBrewery}
                   newPercentage={newPercentage} handleNewPercentage={handleNewPercentage}
                   newHopness={newHopness} handleNewHopness={handleNewHopness} />
       <h2>Beers</h2>
+      <Filter filteredName={filteredName} handleFilter={handleFilter} />
       {filteredBeers.map((beer) => 
       <Beer key={beer.id} beer={beer} editBeer={editBeer} deleteBeer={(id) => deleteFromList(id)} />
       )}
