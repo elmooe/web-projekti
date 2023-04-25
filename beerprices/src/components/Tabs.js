@@ -55,7 +55,7 @@ function Tabs(props) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export default Tabs

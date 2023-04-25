@@ -104,18 +104,26 @@ const App = () => {
   }
 
   const deleteFromList = (id) => {
-    const choosedBeer = restaurants.find(beer => beer.id === id)
-    if (window.confirm(`Delete ${choosedBeer.name} ?`)) {
+    const restaurantIndex = restaurants.findIndex(restaurant => restaurant.beers.some(beer => beer.id === id))
+    if (restaurantIndex === -1) {
+      return
+    }
+  
+    const beerIndex = restaurants[restaurantIndex].beers.findIndex(beer => beer.id === id)
+    if (window.confirm(`Delete ${restaurants[restaurantIndex].beers[beerIndex].name} ?`)) {
       beerService
-      .deleteBeer(choosedBeer.id)
+      .deleteBeer(id)
       .then(() => {
-        setRestaurants(restaurants.filter(beer => beer.id !== id))
+        const newRestaurants = [...restaurants];
+        newRestaurants[restaurantIndex].beers.splice(beerIndex, 1)
+        setRestaurants(newRestaurants)
       })
       .catch(error => {
         console.log(error)
       })
     }
   }
+  
 
   const editBeer = (id) => {
     const beerToEdit = restaurants.find(beer => beer.id === id)
@@ -130,7 +138,7 @@ const App = () => {
     setNewResName('')
     setNewAddress('')
   }
-  
+
   //ravintolan lisäys ilman oluita
   const addRestaurant = (event) => {
     event.preventDefault()
@@ -174,19 +182,17 @@ const App = () => {
   return (
     <div>
       <h2>Check the prices of beers</h2>
+      <Filter filteredName={filteredName} handleFilter={handleFilter} />
+
+      <Tabs list={filteredRestaurants} editBeer={editBeer} deleteBeer={deleteFromList} />
+      <h2>Add Bar or Restaurant</h2>
+      <RestaurantForm addRestaurant={addRestaurant} newResName={newResName} handleNewResName={handleNewResName} newAddress={newAddress} handleNewAddress={handleNewAddress} />
       <h4>Add new beer</h4>
       <BeerForm addBeer={addBeer} newName={newName} handleNewName={handleNewName}
                   newType={newType} handleNewType={handleNewType}
                   newBrewery={newBrevery} handleNewBrewery={handleNewBrewery}
                   newPercentage={newPercentage} handleNewPercentage={handleNewPercentage}
                   newHopness={newHopness} handleNewHopness={handleNewHopness} />
-
-      <RestaurantForm addRestaurant={addRestaurant} newResName={newResName} handleNewResName={handleNewResName} newAddress={newAddress} handleNewAddress={handleNewAddress} />
-
-      <h2>Beers</h2>
-      <Filter filteredName={filteredName} handleFilter={handleFilter} />
-
-      <Tabs list={filteredRestaurants} editBeer={editBeer} deleteBeer={deleteFromList} />
     </div>
   )
 }
