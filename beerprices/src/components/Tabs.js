@@ -26,25 +26,24 @@ function Tabs(props) {
         </button>
       </div>
 
-      <div className="content-tabs">
-        <div
-          className={toggleState === 1 ? "content  active-content" : "content"}
-        >
+        <div className="content-tabs">
+        <div className={toggleState === 1 ? "content  active-content" : "content"}>
           <h2>Ravintolat</h2>
           <hr />
-            {props.list.map((beer) => 
-            <Beer key={beer.id} beer={beer} editBeer={props.editBeer} deleteBeer={props.deleteBeer} />
-            )}
-            <br></br>
-            Ravintolat alauolella
-            {props.list.map((restaurant) => 
-            <Restaurant key={restaurant.id} restaurant={restaurant} editRestaurant={props.editRestaurant} deleteRestaurant={props.deleteRestaurant} />
-            )}
+          {props.list.map((restaurant) => (
+            <div key={restaurant.id}>
+            <Restaurant restaurant={restaurant} editRestaurant={props.editRestaurant} deleteRestaurant={props.deleteRestaurant} />
+
+          <ul className=''>
+          {restaurant.beers.map((beer) => (
+          <li>{beer.name}</li>
+          ))}
+          </ul>
+        </div>
+        ))}
         </div>
 
-        <div
-          className={toggleState === 2 ? "content  active-content" : "content"}
-        >
+        <div className={toggleState === 2 ? "content  active-content" : "content"} >
           <h2>Content 2</h2>
           <hr />
           <p>

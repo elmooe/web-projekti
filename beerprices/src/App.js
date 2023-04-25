@@ -130,8 +130,7 @@ const App = () => {
     setNewResName('')
     setNewAddress('')
   }
-
-
+  
   //ravintolan lisäys ilman oluita
   const addRestaurant = (event) => {
     event.preventDefault()
