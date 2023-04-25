@@ -57,6 +57,14 @@ const App = () => {
     setNewAddress(event.target.value)
   }
 
+  const resetFields = () => {
+    setNewName('')
+    setNewType('')
+    setNewBrewery('')
+    setNewPercentage('')
+    setNewHopness('')
+  }
+
   const addBeer = (event) => {
     event.preventDefault()
     const beerToUpdate = restaurants.find(beer => beer.name === newName)
@@ -68,18 +76,10 @@ const App = () => {
         .updateBeer(beerToUpdate.id, replacedBeer)
         .then(returnedBeer => {
           setRestaurants(restaurants.map(beer => beer.id !== beerToUpdate.id ? beer : returnedBeer))
-          setNewName('')
-          setNewType('')
-          setNewBrewery('')
-          setNewPercentage('')
-          setNewHopness('')
+          resetFields()
         })
       } else {
-        setNewName('')
-        setNewType('')
-        setNewBrewery('')
-        setNewPercentage('')
-        setNewHopness('')
+        resetFields()
       }
     } else {
       const newBeer = {
@@ -94,19 +94,11 @@ const App = () => {
       .create(newBeer)
       .then(createdBeer => {
         setRestaurants(restaurants.concat(createdBeer))
-        setNewName('')
-        setNewType('')
-        setNewBrewery('')
-        setNewPercentage('')
-        setNewHopness('')
+        resetFields()
       })
       .catch(error => {
         console.log(error.response.data)
-        setNewName('')
-        setNewType('')
-        setNewBrewery('')
-        setNewPercentage('')
-        setNewHopness('')
+        resetFields()
       })
     }
   }
@@ -134,6 +126,11 @@ const App = () => {
     setNewHopness(beerToEdit.hopness)
   }
 
+  const resetRFields = () => {
+    setNewResName('')
+    setNewAddress('')
+  }
+
 
   //ravintolan lisäys ilman oluita
   const addRestaurant = (event) => {
@@ -147,12 +144,10 @@ const App = () => {
         .updateBeer(restaurantToUpdate.id, replacedRestaurant)
         .then(returnedRestaurant => {
           setRestaurants(restaurants.map(restaurant => restaurant.id !== restaurantToUpdate.id ? restaurant : returnedRestaurant))
-          setNewResName('')
-          setNewAddress('')
+          resetRFields()
         })
       } else {
-        setNewResName('')
-        setNewAddress('')
+        resetRFields()
       }
     } else {
       const newRestaurant = {
@@ -165,13 +160,11 @@ const App = () => {
       .create(newRestaurant)
       .then(createdRestaurant => {
         setRestaurants(restaurants.concat(createdRestaurant))
-        setNewResName('')
-        setNewAddress('')
+        resetRFields()
       })
       .catch(error => {
         console.log(error.response.data)
-        setNewResName('')
-        setNewAddress('')
+        resetRFields()
       })
     }
   }
