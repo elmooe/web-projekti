@@ -1,12 +1,13 @@
 import './App.css'
 import { useState, useEffect } from 'react'
 import Filter from './components/Filter'
-import BeerFrom from './components/BeerForm'
+import BeerForm from './components/BeerForm'
 import beerService from './services/beerService'
 import Tabs from './components/Tabs'
+import RestaurantForm from './components/RestaurantForm'
 
 const App = () => {
-  const [beers, setBeers] = useState([]) 
+  const [restaurants, setRestaurants] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newType, setNewType] = useState('')
   const [newBrevery, setNewBrewery] = useState('')
@@ -14,11 +15,14 @@ const App = () => {
   const [newHopness, setNewHopness] = useState('')
   const [filteredName, setFilteredName] = useState('')
 
+  const [newResName, setNewResName] = useState('')
+  const [newAddress, setNewAddress] = useState('')
+
   useEffect(() => {
     beerService
       .getAll()
       .then(initialList => {
-        setBeers(initialList)
+        setRestaurants(initialList)
       })
   }, [])
 
@@ -45,17 +49,25 @@ const App = () => {
     setFilteredName(event.target.value)
   }
 
+  const handleNewResName = (event) => {
+    setNewResName(event.target.value)
+  }
+
+  const handleNewAddress = (event) => {
+    setNewAddress(event.target.value)
+  }
+
   const addBeer = (event) => {
     event.preventDefault()
-    const beerToUpdate = beers.find(beer => beer.name === newName)
-    if (beers.some(beer => beer.name === newName)) {
+    const beerToUpdate = restaurants.find(beer => beer.name === newName)
+    if (restaurants.some(beer => beer.name === newName)) {
       if (window.confirm(`${newName} update info?`)) {
         const replacedBeer = {...beerToUpdate, type: newType, brewery: newBrevery, percentage: newPercentage, hopness: newHopness }
   
         beerService
         .updateBeer(beerToUpdate.id, replacedBeer)
         .then(returnedBeer => {
-          setBeers(beers.map(beer => beer.id !== beerToUpdate.id ? beer : returnedBeer))
+          setRestaurants(restaurants.map(beer => beer.id !== beerToUpdate.id ? beer : returnedBeer))
           setNewName('')
           setNewType('')
           setNewBrewery('')
@@ -65,6 +77,9 @@ const App = () => {
       } else {
         setNewName('')
         setNewType('')
+        setNewBrewery('')
+        setNewPercentage('')
+        setNewHopness('')
       }
     } else {
       const newBeer = {
@@ -78,7 +93,7 @@ const App = () => {
       beerService
       .create(newBeer)
       .then(createdBeer => {
-        setBeers(beers.concat(createdBeer))
+        setRestaurants(restaurants.concat(createdBeer))
         setNewName('')
         setNewType('')
         setNewBrewery('')
@@ -95,15 +110,14 @@ const App = () => {
       })
     }
   }
-  
 
   const deleteFromList = (id) => {
-    const choosedBeer = beers.find(beer => beer.id === id)
+    const choosedBeer = restaurants.find(beer => beer.id === id)
     if (window.confirm(`Delete ${choosedBeer.name} ?`)) {
       beerService
       .deleteBeer(choosedBeer.id)
       .then(() => {
-        setBeers(beers.filter(beer => beer.id !== id))
+        setRestaurants(restaurants.filter(beer => beer.id !== id))
       })
       .catch(error => {
         console.log(error)
@@ -112,30 +126,75 @@ const App = () => {
   }
 
   const editBeer = (id) => {
-    const beerToEdit = beers.find(beer => beer.id === id)
+    const beerToEdit = restaurants.find(beer => beer.id === id)
     setNewName(beerToEdit.name)
     setNewType(beerToEdit.type)
     setNewBrewery(beerToEdit.brewery)
     setNewPercentage(beerToEdit.percentage)
     setNewHopness(beerToEdit.hopness)
   }
+
+
+  //ravintolan lisäys ilman oluita
+  const addRestaurant = (event) => {
+    event.preventDefault()
+    const restaurantToUpdate = restaurants.find(restaurant => restaurant.name === newResName)
+    if (restaurants.some(restaurant => restaurant.name === newResName)) {
+      if (window.confirm(`${newResName} update info?`)) {
+        const replacedRestaurant = {...restaurantToUpdate, address: newAddress }
   
-  const filteredBeers = filteredName === ''
-    ? beers : beers.filter(beer => beer.name.toLowerCase().includes(filteredName.toLowerCase()))
+        beerService
+        .updateBeer(restaurantToUpdate.id, replacedRestaurant)
+        .then(returnedRestaurant => {
+          setRestaurants(restaurants.map(restaurant => restaurant.id !== restaurantToUpdate.id ? restaurant : returnedRestaurant))
+          setNewResName('')
+          setNewAddress('')
+        })
+      } else {
+        setNewResName('')
+        setNewAddress('')
+      }
+    } else {
+      const newRestaurant = {
+        name: newResName,
+        address: newAddress,
+        beers: []
+      }
+      
+      beerService
+      .create(newRestaurant)
+      .then(createdRestaurant => {
+        setRestaurants(restaurants.concat(createdRestaurant))
+        setNewResName('')
+        setNewAddress('')
+      })
+      .catch(error => {
+        console.log(error.response.data)
+        setNewResName('')
+        setNewAddress('')
+      })
+    }
+  }
+  
+  const filteredRestaurants = filteredName === ''
+    ? restaurants : restaurants.filter(restaurant => restaurant.name.toLowerCase().includes(filteredName.toLowerCase()))
 
   return (
     <div>
       <h2>Check the prices of beers</h2>
       <h4>Add new beer</h4>
-      <BeerFrom addBeer={addBeer} newName={newName} handleNewName={handleNewName}
+      <BeerForm addBeer={addBeer} newName={newName} handleNewName={handleNewName}
                   newType={newType} handleNewType={handleNewType}
                   newBrewery={newBrevery} handleNewBrewery={handleNewBrewery}
                   newPercentage={newPercentage} handleNewPercentage={handleNewPercentage}
                   newHopness={newHopness} handleNewHopness={handleNewHopness} />
+
+      <RestaurantForm addRestaurant={addRestaurant} newResName={newResName} handleNewResName={handleNewResName} newAddress={newAddress} handleNewAddress={handleNewAddress} />
+
       <h2>Beers</h2>
       <Filter filteredName={filteredName} handleFilter={handleFilter} />
-      <Tabs list={filteredBeers} editBeer={editBeer} deleteBeer={deleteFromList} />
 
+      <Tabs list={filteredRestaurants} editBeer={editBeer} deleteBeer={deleteFromList} />
     </div>
   )
 }

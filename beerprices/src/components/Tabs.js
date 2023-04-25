@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Beer } from './Beer'
+import { Restaurant } from './Restaurant'
 
 function Tabs(props) {
   const [toggleState, setToggleState] = useState(1)
@@ -29,10 +30,15 @@ function Tabs(props) {
         <div
           className={toggleState === 1 ? "content  active-content" : "content"}
         >
-          <h2>Content 1</h2>
+          <h2>Ravintolat</h2>
           <hr />
             {props.list.map((beer) => 
             <Beer key={beer.id} beer={beer} editBeer={props.editBeer} deleteBeer={props.deleteBeer} />
+            )}
+            <br></br>
+            Ravintolat alauolella
+            {props.list.map((restaurant) => 
+            <Restaurant key={restaurant.id} restaurant={restaurant} editRestaurant={props.editRestaurant} deleteRestaurant={props.deleteRestaurant} />
             )}
         </div>
 

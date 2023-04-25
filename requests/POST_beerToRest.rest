@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/restaurants/6447cec42c6587c9bf9e5adf/beers
+Content-Type: application/json
+
+{
+    "name": "Olvi",
+    "type": "lager",
+    "brewery": "olvi",
+    "percentage": "5,1",
+    "hopness": "17"
+}

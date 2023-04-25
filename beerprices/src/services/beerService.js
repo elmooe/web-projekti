@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl = '/api/beers'
+const baseUrl = '/api/restaurants'
 
 const getAll = () => {
     const request = axios.get(baseUrl)
