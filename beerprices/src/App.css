@@ -122,3 +122,11 @@ button {
 .active-content {
   display: block;
 }
+
+.BeerList {
+  list-style: none;
+  padding-left: 50px;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+}

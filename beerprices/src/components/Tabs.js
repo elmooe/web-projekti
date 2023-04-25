@@ -36,7 +36,9 @@ function Tabs(props) {
 
           <ul className=''>
           {restaurant.beers.map((beer) => (
-          <li>{beer.name}</li>
+            <div key={beer.id}>
+              <Beer beer={beer} editBeer={props.editBeer} deleteBeer={props.deleteBeer} />
+            </div>
           ))}
           </ul>
         </div>
