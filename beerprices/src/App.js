@@ -2,8 +2,8 @@ import './App.css'
 import { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import BeerFrom from './components/BeerForm'
-import { Beer } from './components/Beer'
 import beerService from './services/beerService'
+import Tabs from './components/Tabs'
 
 const App = () => {
   const [beers, setBeers] = useState([]) 
@@ -134,9 +134,8 @@ const App = () => {
                   newHopness={newHopness} handleNewHopness={handleNewHopness} />
       <h2>Beers</h2>
       <Filter filteredName={filteredName} handleFilter={handleFilter} />
-      {filteredBeers.map((beer) => 
-      <Beer key={beer.id} beer={beer} editBeer={editBeer} deleteBeer={(id) => deleteFromList(id)} />
-      )}
+      <Tabs list={filteredBeers} editBeer={editBeer} deleteBeer={deleteFromList} />
+
     </div>
   )
 }
