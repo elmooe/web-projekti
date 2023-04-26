@@ -65,44 +65,30 @@ const App = () => {
     setNewHopness('')
   }
 
-  const addBeer = (event) => {
-    event.preventDefault()
-    const beerToUpdate = restaurants.find(beer => beer.name === newName)
-    if (restaurants.some(beer => beer.name === newName)) {
-      if (window.confirm(`${newName} update info?`)) {
-        const replacedBeer = {...beerToUpdate, type: newType, brewery: newBrevery, percentage: newPercentage, hopness: newHopness }
-  
-        beerService
-        .updateBeer(beerToUpdate.id, replacedBeer)
-        .then(returnedBeer => {
-          setRestaurants(restaurants.map(beer => beer.id !== beerToUpdate.id ? beer : returnedBeer))
-          resetFields()
-        })
-      } else {
-        resetFields()
-      }
-    } else {
-      const newBeer = {
-        name: newName,
-        type: newType,
-        brewery: newBrevery,
-        percentage: newPercentage,
-        hopness: newHopness
-      }
-      
-      beerService
-      .create(newBeer)
-      .then(createdBeer => {
-        setRestaurants(restaurants.concat(createdBeer))
+  //lisää oluen halutulle ravintolalle
+  const addBeer = (id) => {
+    const restaurantToAdd = restaurants.find(restaurant => restaurant.id === id)
+
+    const newBeer = {
+      name: newName,
+      type: newType,
+      brewery: newBrevery,
+      percentage: newPercentage,
+      hopness: newHopness,
+    }
+    beerService
+      .createBeer(restaurantToAdd.id, newBeer)
+      .then(returnedBeer => {
+        const updatedRestaurants = restaurants.map(restaurant => restaurant.id === id ? {...restaurant, beers: restaurant.beers.concat(returnedBeer)} : restaurant)
+        setRestaurants(updatedRestaurants)
         resetFields()
       })
       .catch(error => {
         console.log(error.response.data)
         resetFields()
       })
-    }
   }
-
+  
   //poistaa halutun oluen listalta
   const deleteFromList = (id) => {
     const restaurantIndex = restaurants.findIndex(restaurant => restaurant.beers.some(beer => beer.id === id))
@@ -184,7 +170,7 @@ const App = () => {
       <h2>Check the prices of beers</h2>
       <Filter filteredName={filteredName} handleFilter={handleFilter} />
 
-      <Tabs list={filteredRestaurants} editBeer={editBeer} deleteBeer={deleteFromList} />
+      <Tabs list={filteredRestaurants} editBeer={editBeer} deleteBeer={deleteFromList} addBeer={addBeer} />
       <h2>Add Bar or Restaurant</h2>
       <RestaurantForm addRestaurant={addRestaurant} newResName={newResName} handleNewResName={handleNewResName} newAddress={newAddress} handleNewAddress={handleNewAddress} />
       <h4>Add new beer</h4>

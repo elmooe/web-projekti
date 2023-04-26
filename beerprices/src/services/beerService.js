@@ -13,6 +13,7 @@ const create = newObject => {
     return request.then(response => response.data)
 }
 
+//uusi olut ravintolalle
 const createBeer = (id, newObject) => {
     const request = axios.post(`${baseUrl}/${id}/beers`, newObject)
     return request.then(response => response.data)
@@ -28,4 +29,4 @@ const updateBeer = (id, newObject) => {
     return request.then(response => response.data)
 }
 
-export default { create, getAll, deleteBeer, updateBeer }
+export default { create, getAll, deleteBeer, updateBeer, createBeer }

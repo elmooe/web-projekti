@@ -32,15 +32,13 @@ function Tabs(props) {
           <hr />
           {props.list.map((restaurant) => (
             <div key={restaurant.id}>
-            <Restaurant restaurant={restaurant} editRestaurant={props.editRestaurant} />
+            <Restaurant restaurant={restaurant} editRestaurant={props.editRestaurant} addBeer={props.addBeer} />
 
-          <ul className=''>
           {restaurant.beers.map((beer) => (
             <div key={beer.id}>
               <Beer beer={beer} editBeer={props.editBeer} deleteBeer={props.deleteBeer} />
             </div>
           ))}
-          </ul>
         </div>
         ))}
         </div>
