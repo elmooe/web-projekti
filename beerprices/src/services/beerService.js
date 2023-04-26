@@ -19,14 +19,18 @@ const createBeer = (id, newObject) => {
     return request.then(response => response.data)
 }
 
+//poistaa oluen halutusta ravintolasta
 const deleteBeer = (restaurantId, beerId) => {
     const request = axios.delete(`${baseUrl}/${restaurantId}/beers/${beerId}`)
     return request.then(response => response.data)
 }
 
+//ei vielä otettu käyttöön
 const updateBeer = (id, newObject) => {
     const request = axios.put(`${baseUrl}/${id}`, newObject)
     return request.then(response => response.data)
 }
 
-export default { create, getAll, deleteBeer, updateBeer, createBeer }
+const beerService = { create, getAll, deleteBeer, updateBeer, createBeer };
+
+export default beerService;

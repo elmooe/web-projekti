@@ -1,9 +1,10 @@
-const BeerFrom = ({ addBeer, newName, handleNewName, newType, handleNewType,
+const BeerForm = ({ addBeer, newName, handleNewName, newType, handleNewType,
                       newBrewery, handleNewBrewery, newPercentage, handleNewPercentage,
                       newHopness, handleNewHopness }) => {
     return (
       <form onSubmit={addBeer}>
         <div>
+        <h4>Add new beer</h4>
           name: <input value={newName} onChange={handleNewName} />
         </div>
         <div>
@@ -25,4 +26,4 @@ const BeerFrom = ({ addBeer, newName, handleNewName, newType, handleNewType,
     )
 }
 
-export default BeerFrom
+export default BeerForm

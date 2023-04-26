@@ -1,7 +1,6 @@
 import './App.css'
 import { useState, useEffect } from 'react'
 import Filter from './components/Filter'
-import BeerForm from './components/BeerForm'
 import beerService from './services/beerService'
 import Tabs from './components/Tabs'
 import RestaurantForm from './components/RestaurantForm'
@@ -170,15 +169,14 @@ const App = () => {
       <h2>Check the prices of beers</h2>
       <Filter filteredName={filteredName} handleFilter={handleFilter} />
 
-      <Tabs list={filteredRestaurants} editBeer={editBeer} deleteBeer={deleteFromList} addBeer={addBeer} />
+      <Tabs list={filteredRestaurants} editBeer={editBeer} deleteBeer={deleteFromList} addBeer={addBeer}
+            newName={newName} handleNewName={handleNewName}
+            newType={newType} handleNewType={handleNewType}
+            newBrewery={newBrevery} handleNewBrewery={handleNewBrewery}
+            newPercentage={newPercentage} handleNewPercentage={handleNewPercentage}
+            newHopness={newHopness} handleNewHopness={handleNewHopness}/>
       <h2>Add Bar or Restaurant</h2>
       <RestaurantForm addRestaurant={addRestaurant} newResName={newResName} handleNewResName={handleNewResName} newAddress={newAddress} handleNewAddress={handleNewAddress} />
-      <h4>Add new beer</h4>
-      <BeerForm addBeer={addBeer} newName={newName} handleNewName={handleNewName}
-                  newType={newType} handleNewType={handleNewType}
-                  newBrewery={newBrevery} handleNewBrewery={handleNewBrewery}
-                  newPercentage={newPercentage} handleNewPercentage={handleNewPercentage}
-                  newHopness={newHopness} handleNewHopness={handleNewHopness} />
     </div>
   )
 }
