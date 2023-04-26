@@ -7,13 +7,19 @@ const getAll = () => {
     return request.then(response => response.data)
 }
 
+//uusi ravintola
 const create = newObject => {
     const request = axios.post(baseUrl, newObject)
     return request.then(response => response.data)
 }
 
-const deleteBeer = (id) => {
-    const request = axios.delete(`${baseUrl}/${id}`)
+const createBeer = (id, newObject) => {
+    const request = axios.post(`${baseUrl}/${id}/beers`, newObject)
+    return request.then(response => response.data)
+}
+
+const deleteBeer = (restaurantId, beerId) => {
+    const request = axios.delete(`${baseUrl}/${restaurantId}/beers/${beerId}`)
     return request.then(response => response.data)
 }
 

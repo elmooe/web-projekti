@@ -103,6 +103,7 @@ const App = () => {
     }
   }
 
+  //poistaa halutun oluen listalta
   const deleteFromList = (id) => {
     const restaurantIndex = restaurants.findIndex(restaurant => restaurant.beers.some(beer => beer.id === id))
     if (restaurantIndex === -1) {
@@ -112,18 +113,17 @@ const App = () => {
     const beerIndex = restaurants[restaurantIndex].beers.findIndex(beer => beer.id === id)
     if (window.confirm(`Delete ${restaurants[restaurantIndex].beers[beerIndex].name} ?`)) {
       beerService
-      .deleteBeer(id)
-      .then(() => {
-        const newRestaurants = [...restaurants];
-        newRestaurants[restaurantIndex].beers.splice(beerIndex, 1)
-        setRestaurants(newRestaurants)
-      })
-      .catch(error => {
-        console.log(error)
-      })
+        .deleteBeer(restaurants[restaurantIndex].id, id)
+        .then(() => {
+          const newRestaurants = [...restaurants];
+          newRestaurants[restaurantIndex].beers.splice(beerIndex, 1)
+          setRestaurants(newRestaurants)
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
   }
-  
 
   const editBeer = (id) => {
     const beerToEdit = restaurants.find(beer => beer.id === id)
