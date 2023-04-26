@@ -1,0 +1,1 @@
+DELETE http://localhost:3001/api/restaurants/6447cec42c6587c9bf9e5adf/beers/6447cf1480cb0058096b96f2

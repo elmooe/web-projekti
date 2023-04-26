@@ -118,6 +118,33 @@ app.get('/api/restaurants/beers', (request, response) => {
 })
 
 
+//poistaa halutusta ravintolasta halutun oluen
+app.delete('/api/restaurants/:restaurantId/beers/:beerId', (request, response, next) => {
+  const { restaurantId, beerId } = request.params
+
+  Restaurant.findById(restaurantId)
+    .then((restaurant) => {
+      if (!restaurant) {
+        next({ error: 'Ravintolaa ei löydy', status: 404 })
+      }
+
+      const beerIndex = restaurant.beers.findIndex((beer) => beer.id === beerId)
+
+      if (beerIndex === -1) {
+        next({ error: 'Olutta ei löydy', status: 404 })
+      }
+
+      restaurant.beers.splice(beerIndex, 1)
+
+      restaurant.save()
+        .then(() => {
+          response.json({ message: 'Olut poistettu ravintolan olutlistalta' })
+        })
+        .catch(error => next(error))
+    })
+    .catch(error => next(error))
+})
+
 app.use(unknownEndpoint)
 
 const PORT = process.env.PORT
