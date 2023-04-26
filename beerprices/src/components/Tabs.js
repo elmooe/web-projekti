@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Beer } from './Beer'
 import { Restaurant } from './Restaurant'
 
@@ -32,7 +32,7 @@ function Tabs(props) {
           <hr />
           {props.list.map((restaurant) => (
             <div key={restaurant.id}>
-            <Restaurant restaurant={restaurant} editRestaurant={props.editRestaurant} deleteRestaurant={props.deleteRestaurant} />
+            <Restaurant restaurant={restaurant} editRestaurant={props.editRestaurant} />
 
           <ul className=''>
           {restaurant.beers.map((beer) => (
