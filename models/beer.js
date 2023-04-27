@@ -39,6 +39,12 @@ const restaurantSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  pintIII:{
+    type: String
+  },
+  pintIV:{
+    type: String
+  },
   beers: [beerSchema]
 })
 

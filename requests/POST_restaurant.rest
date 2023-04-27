@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/restaurants
+Content-Type: application/json
+
+{
+    "name": "Kannunkulma",
+    "address": "kannukatu 2",
+    "pintIII": "4",
+    "pintIV": "7",
+    "beers": []
+}
