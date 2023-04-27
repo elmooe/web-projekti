@@ -5,17 +5,17 @@ const EditBeerForm = ({ beer, onSave }) => {
   const [type, setType] = useState(beer.type);
   const [brewery, setBrewery] = useState(beer.brewery);
   const [percentage, setPercentage] = useState(beer.percentage);
-  const [hopness, setHopness] = useState(beer.hopness);
+  const [hopness, setPrice] = useState(beer.price);
 
   const handleSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     onSave({
       ...beer,
       name,
       type,
       brewery,
       percentage,
-      hopness,
+      price,
     });
   };
 
@@ -34,7 +34,7 @@ const EditBeerForm = ({ beer, onSave }) => {
       <input type="number" id="percentage" value={percentage} onChange={(event) => setPercentage(event.target.value)} />
 
       <label htmlFor="hopness">Hopness:</label>
-      <input type="number" id="hopness" value={hopness} onChange={(event) => setHopness(event.target.value)} />
+      <input type="number" id="hopness" value={price} onChange={(event) => setPrice(event.target.value)} />
 
       <button type="submit">Save</button>
     </form>

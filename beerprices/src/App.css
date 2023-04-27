@@ -28,6 +28,7 @@ body {
   border-radius: 5px;
   margin-bottom: 1rem;
   cursor: pointer;
+  font-weight: 700;
 }
 
 .fa-trash {
@@ -132,4 +133,13 @@ button {
   padding-left: 50px;
   display: flex;
   padding-bottom: 10px;
+  font-weight: 400;
+}
+
+.address {
+  list-style: none;
+  display: flex;
+  padding-bottom: 10px;
+  color: #8758ff;
+  font-weight: 600;
 }

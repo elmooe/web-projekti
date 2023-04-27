@@ -11,7 +11,7 @@ const App = () => {
   const [newType, setNewType] = useState('')
   const [newBrevery, setNewBrewery] = useState('')
   const [newPercentage, setNewPercentage] = useState('')
-  const [newHopness, setNewHopness] = useState('')
+  const [newPrice, setNewPrice] = useState('')
   const [filteredName, setFilteredName] = useState('')
 
   const [newResName, setNewResName] = useState('')
@@ -43,8 +43,8 @@ const App = () => {
     setNewPercentage(event.target.value)
   }
 
-  const handleNewHopness = (event) => {
-    setNewHopness(event.target.value)
+  const handleNewPrice = (event) => {
+    setNewPrice(event.target.value)
   }
   const handleFilter = (event) => {
     setFilteredName(event.target.value)
@@ -69,7 +69,7 @@ const App = () => {
     setNewType('')
     setNewBrewery('')
     setNewPercentage('')
-    setNewHopness('')
+    setNewPrice('')
   }
 
   //lisää oluen halutulle ravintolalle
@@ -81,7 +81,7 @@ const App = () => {
       type: newType,
       brewery: newBrevery,
       percentage: newPercentage,
-      hopness: newHopness,
+      price: newPrice,
     }
     beerService
       .createBeer(restaurantToAdd.id, newBeer)
@@ -124,7 +124,7 @@ const App = () => {
     setNewType(beerToEdit.type)
     setNewBrewery(beerToEdit.brewery)
     setNewPercentage(beerToEdit.percentage)
-    setNewHopness(beerToEdit.hopness)
+    setNewPrice(beerToEdit.price)
   }
 
   const resetRFields = () => {
@@ -195,7 +195,7 @@ const App = () => {
             newType={newType} handleNewType={handleNewType}
             newBrewery={newBrevery} handleNewBrewery={handleNewBrewery}
             newPercentage={newPercentage} handleNewPercentage={handleNewPercentage}
-            newHopness={newHopness} handleNewHopness={handleNewHopness}/>
+            newPrice={newPrice} handleNewPrice={handleNewPrice}/>
       <h2>Add Bar or Restaurant</h2>
       <RestaurantForm addRestaurant={addRestaurant} 
       newResName={newResName} handleNewResName={handleNewResName} 

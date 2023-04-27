@@ -27,7 +27,7 @@ const beerSchema = new mongoose.Schema({
   },
   brewery: String,
   percentage: String,
-  hopness: String,
+  price: String,
 })
 
 const restaurantSchema = new mongoose.Schema({

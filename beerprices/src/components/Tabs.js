@@ -29,7 +29,7 @@ function Tabs(props) {
           className={toggleState === 1 ? "tabs active-tabs" : "tabs"}
           onClick={() => toggleTab(1)}
         >
-          KAIKKI
+          ALL
         </button>
         <button
           className={toggleState === 2 ? "tabs active-tabs" : "tabs"}
@@ -47,13 +47,16 @@ function Tabs(props) {
             <div key={restaurant.id}>
               <div onClick={() => handleRestaurantClick(restaurant.id)}>
                 <Restaurant restaurant={restaurant} addBeer={props.addBeer} />
+                <div className='address'>
+                  {restaurant.address}
+                </div>
               </div>
               {selectedRestaurantId === restaurant.id && showBeerForm && (
                 <BeerForm addBeer={props.addBeer} newName={props.newName} handleNewName={props.handleNewName}
                           newType={props.newType} handleNewType={props.handleNewType}
                           newBrewery={props.newBrevery} handleNewBrewery={props.handleNewBrewery}
                           newPercentage={props.newPercentage} handleNewPercentage={props.handleNewPercentage}
-                          newHopness={props.newHopness} handleNewHopness={props.handleNewHopness} />
+                          newPrice={props.newPrice} handleNewPrice={props.handleNewPrice} />
               )}
 
               {restaurant.beers.map((beer) => (

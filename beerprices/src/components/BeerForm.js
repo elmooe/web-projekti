@@ -1,6 +1,6 @@
 const BeerForm = ({ addBeer, newName, handleNewName, newType, handleNewType,
                       newBrewery, handleNewBrewery, newPercentage, handleNewPercentage,
-                      newHopness, handleNewHopness }) => {
+                      newPrice, handleNewPrice }) => {
     return (
       <form onSubmit={addBeer}>
         <div>
@@ -17,7 +17,7 @@ const BeerForm = ({ addBeer, newName, handleNewName, newType, handleNewType,
           percentage: <input value={newPercentage} onChange={handleNewPercentage} />
         </div>
          <div>
-          hopness: <input value={newHopness} onChange={handleNewHopness} />
+          price: <input value={newPrice} onChange={handleNewPrice} />
         </div>
         <div>
           <button type="submit">add</button>

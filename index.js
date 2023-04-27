@@ -79,7 +79,7 @@ app.post('/api/restaurants', (request, response, next) => {
 //uusi olut ravintolalle ravintolan id:n avulla
 app.post('/api/restaurants/:id/beers', (req, res) => {
   const { id } = req.params
-  const { name, type, brewery, percentage, hopness } = req.body
+  const { name, type, brewery, percentage, price } = req.body
 
   Restaurant.findById(id)
     .then((restaurant) => {
@@ -92,7 +92,7 @@ app.post('/api/restaurants/:id/beers', (req, res) => {
         type: type,
         brewery: brewery,
         percentage: percentage,
-        hopness: hopness,
+        price: price,
       }
       
       restaurant.beers.push(newBeer)
@@ -151,7 +151,7 @@ app.delete('/api/restaurants/:restaurantId/beers/:beerId', (request, response, n
 //päivittää oluen tiedot
 app.put('/api/restaurants/:id/beers', (req, res) => {
   const { id } = req.params
-  const { name, type, brewery, percentage, hopness } = req.body
+  const { name, type, brewery, percentage, price } = req.body
 
   Restaurant.findById(id)
     .then((restaurant) => {
@@ -164,7 +164,7 @@ app.put('/api/restaurants/:id/beers', (req, res) => {
         type: type,
         brewery: brewery,
         percentage: percentage,
-        hopness: hopness,
+        price: price,
       }
       
       restaurant.beers.findByIdAndUpdate(req.params.id, newBeer, {new:true} )
