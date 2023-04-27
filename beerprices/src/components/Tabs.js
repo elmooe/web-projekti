@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Beer } from './Beer'
 import { Restaurant } from './Restaurant'
 import BeerForm from './BeerForm'
+import RestaurantForm from './RestaurantForm'
+import Filter from './Filter'
 
 function Tabs(props) {
   const [toggleState, setToggleState] = useState(1)
@@ -29,20 +31,20 @@ function Tabs(props) {
           className={toggleState === 1 ? "tabs active-tabs" : "tabs"}
           onClick={() => toggleTab(1)}
         >
-          ALL
+          ALL PLACES
         </button>
         <button
           className={toggleState === 2 ? "tabs active-tabs" : "tabs"}
           onClick={() => toggleTab(2)}
         >
-          PULLOT
+          ADD A BAR
         </button>
       </div>
 
       <div className="content-tabs">
         <div className={toggleState === 1 ? "content  active-content" : "content"}>
-          <h2>Ravintolat</h2>
-          <hr />
+          <h2 className="contenth2">Check the Prices of Beers</h2>
+          <Filter filteredName={props.filteredName} handleFilter={props.handleFilter} />
           {props.list.map((restaurant) => (
             <div key={restaurant.id}>
               <div onClick={() => handleRestaurantClick(restaurant.id)}>
@@ -67,14 +69,13 @@ function Tabs(props) {
             </div>
           ))}
         </div>
-
         <div className={toggleState === 2 ? "content  active-content" : "content"} >
-          <h2>Content 2</h2>
-          <hr />
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente
-            voluptatum qui adipisci.
-          </p>
+          <h2 className='contenth2'>Add a bar or a restaurant</h2>
+          <RestaurantForm addRestaurant={props.addRestaurant} 
+                          newResName={props.newResName} handleNewResName={props.handleNewResName} 
+                          newAddress={props.newAddress} handleNewAddress={props.handleNewAddress} 
+                          newPintIII={props.newPintIII} handleNewPintIII={props.handleNewPintIII}
+                          newPintIV={props.newPintIV} handleNewPintIV={props.handleNewPintIV} />
         </div>
       </div>
     </div>

@@ -1,8 +1,8 @@
 const Filter = ({ filteredName, handleFilter }) => {
     return (
       <form>
-        <div>
-          find bar by name <input value={filteredName} onChange={handleFilter} />
+        <div className="filter">
+        <input className="filterInput" value={filteredName} onChange={handleFilter} placeholder="Search a bar by name..."/>
         </div>
       </form>
     )

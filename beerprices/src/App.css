@@ -45,7 +45,8 @@ button {
   border: none;
   padding: 0.55rem;
   cursor: pointer;
-  
+  font-size: 17px;
+  font-weight: 600;
 }
 
 *, ::before, ::after {
@@ -142,4 +143,26 @@ button {
   padding-bottom: 10px;
   color: #8758ff;
   font-weight: 600;
+}
+
+ .contenth2 {
+  font-size: 30px;
+  margin: auto;
+  text-align: center;
+}
+
+.filter {
+  font-weight: 100;
+  font-size: 30px;
+  padding-bottom: 15px;
+}
+
+.filterInput {
+  border-radius: 5px;
+  outline: none;
+  margin: auto;
+  height: 35px;
+  width: 200px;
+  font-weight: 600;
+  text-align: center;
 }

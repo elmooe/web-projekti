@@ -1,9 +1,7 @@
 import './App.css'
 import { useState, useEffect } from 'react'
-import Filter from './components/Filter'
 import beerService from './services/beerService'
 import Tabs from './components/Tabs'
-import RestaurantForm from './components/RestaurantForm'
 
 const App = () => {
   const [restaurants, setRestaurants] = useState([]) 
@@ -187,21 +185,20 @@ const App = () => {
 
   return (
     <div>
-      <h2>Check the prices of beers</h2>
-      <Filter filteredName={filteredName} handleFilter={handleFilter} />
-
-      <Tabs list={filteredRestaurants} editBeer={editBeer} deleteBeer={deleteFromList} addBeer={addBeer}
+      <Tabs filteredName={filteredName} handleFilter={handleFilter}
+            list={filteredRestaurants} editBeer={editBeer}
+            deleteBeer={deleteFromList} addBeer={addBeer}
             newName={newName} handleNewName={handleNewName}
             newType={newType} handleNewType={handleNewType}
             newBrewery={newBrevery} handleNewBrewery={handleNewBrewery}
             newPercentage={newPercentage} handleNewPercentage={handleNewPercentage}
-            newPrice={newPrice} handleNewPrice={handleNewPrice}/>
-      <h2>Add Bar or Restaurant</h2>
-      <RestaurantForm addRestaurant={addRestaurant} 
-      newResName={newResName} handleNewResName={handleNewResName} 
-      newAddress={newAddress} handleNewAddress={handleNewAddress} 
-      newPintIII={newPintIII} handleNewPintIII={handleNewPintIII}
-      newPintIV={newPintIV} handleNewPintIV={handleNewPintIV}/>
+            newPrice={newPrice} handleNewPrice={handleNewPrice}
+            addRestaurant={addRestaurant}
+            newResName={newResName} handleNewResName={handleNewResName} 
+            newAddress={newAddress} handleNewAddress={handleNewAddress} 
+            newPintIII={newPintIII} handleNewPintIII={handleNewPintIII}
+            newPintIV={newPintIV} handleNewPintIV={handleNewPintIV}
+      />
     </div>
   )
 }
