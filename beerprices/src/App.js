@@ -16,6 +16,8 @@ const App = () => {
 
   const [newResName, setNewResName] = useState('')
   const [newAddress, setNewAddress] = useState('')
+  const [newPintIII, setNewPintIII] = useState('')
+  const [newPintIV, setNewPintIV] = useState('')
 
   useEffect(() => {
     beerService
@@ -54,6 +56,12 @@ const App = () => {
 
   const handleNewAddress = (event) => {
     setNewAddress(event.target.value)
+  }
+  const handleNewPintIII = (event) => {
+    setNewPintIII(event.target.value)
+  }
+  const handleNewPintIV = (event) => {
+    setNewPintIV(event.target.value)
   }
 
   const resetFields = () => {
@@ -122,6 +130,8 @@ const App = () => {
   const resetRFields = () => {
     setNewResName('')
     setNewAddress('')
+    setNewPintIII('')
+    setNewPintIV('')
   }
 
   //ravintolan lisäys ilman oluita
@@ -130,7 +140,16 @@ const App = () => {
     const restaurantToUpdate = restaurants.find(restaurant => restaurant.name === newResName)
     if (restaurants.some(restaurant => restaurant.name === newResName)) {
       if (window.confirm(`${newResName} update info?`)) {
-        const replacedRestaurant = {...restaurantToUpdate, address: newAddress }
+        
+        var replacedRestaurant
+  
+        if((newPintIII && newPintIV) === null || (newPintIII && newPintIV) === ""){
+          replacedRestaurant = {...restaurantToUpdate, address: newAddress}
+        } else if (newPintIII === null || newPintIII === ""){
+          replacedRestaurant = {...restaurantToUpdate, address: newAddress, pintIv: newPintIV}
+        } else if (newPintIV === null || newPintIV === ""){
+          replacedRestaurant = {...restaurantToUpdate, address: newAddress, pintIII: newPintIII}
+        } else {replacedRestaurant = {...restaurantToUpdate, address: newAddress, pintIII: newPintIII, pintIV: newPintIV}}
   
         beerService
         .updateBeer(restaurantToUpdate.id, replacedRestaurant)
@@ -138,13 +157,15 @@ const App = () => {
           setRestaurants(restaurants.map(restaurant => restaurant.id !== restaurantToUpdate.id ? restaurant : returnedRestaurant))
           resetRFields()
         })
-      } else {
+      } else { 
         resetRFields()
       }
     } else {
       const newRestaurant = {
         name: newResName,
         address: newAddress,
+        pintIII: newPintIII,
+        pintIV: newPintIV,
         beers: []
       }
       
@@ -176,7 +197,11 @@ const App = () => {
             newPercentage={newPercentage} handleNewPercentage={handleNewPercentage}
             newHopness={newHopness} handleNewHopness={handleNewHopness}/>
       <h2>Add Bar or Restaurant</h2>
-      <RestaurantForm addRestaurant={addRestaurant} newResName={newResName} handleNewResName={handleNewResName} newAddress={newAddress} handleNewAddress={handleNewAddress} />
+      <RestaurantForm addRestaurant={addRestaurant} 
+      newResName={newResName} handleNewResName={handleNewResName} 
+      newAddress={newAddress} handleNewAddress={handleNewAddress} 
+      newPintIII={newPintIII} handleNewPintIII={handleNewPintIII}
+      newPintIV={newPintIV} handleNewPintIV={handleNewPintIV}/>
     </div>
   )
 }

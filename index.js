@@ -64,6 +64,8 @@ app.post('/api/restaurants', (request, response, next) => {
     const newRestaurant = new Restaurant({
       name: body.name,
       address: body.address,
+      pintIII: body.pintIII,
+      pintIV: body.pintIV,
       beers: []
     })
 
@@ -143,6 +145,35 @@ app.delete('/api/restaurants/:restaurantId/beers/:beerId', (request, response, n
         .catch(error => next(error))
     })
     .catch(error => next(error))
+})
+
+
+//päivittää oluen tiedot
+app.put('/api/restaurants/:id/beers', (req, res) => {
+  const { id } = req.params
+  const { name, type, brewery, percentage, hopness } = req.body
+
+  Restaurant.findById(id)
+    .then((restaurant) => {
+      if (!restaurant) {
+        return res.status(404).json({ error: 'Ravintolaa ei löydy' })
+      }
+
+      const newBeer = {
+        name: name,
+        type: type,
+        brewery: brewery,
+        percentage: percentage,
+        hopness: hopness,
+      }
+      
+      restaurant.beers.findByIdAndUpdate(req.params.id, newBeer, {new:true} )
+        .then(() => {
+          res.json({ message: 'Olut lisätty ravintolan olutlistaan' })
+        })
+        .catch(error => res.status(500).json({ error: error.message }))
+    })
+    .catch(error => res.status(500).json({ error: error.message }))
 })
 
 app.use(unknownEndpoint)
