@@ -80,7 +80,7 @@ function Tabs(props) {
                 <div key={beer.id}>
                   <Beer beer={beer} editBeer={() => handleBeerClick(beer.id)} deleteBeer={props.deleteBeer} />
                   {selectedBeerId === beer.id && showEditBeerForm && (
-                    <EditBeerForm editBeer={beer} value={props.newPrice} />
+                    <EditBeerForm editBeer={beer} newPrice={props.newPrice} handleNewPrice={props.handleNewPrice} />
                   )}
                 </div>
               ))}

@@ -26,8 +26,8 @@ const deleteBeer = (restaurantId, beerId) => {
 }
 
 //ei vielä otettu käyttöön
-const updateBeer = (id, newObject) => {
-    const request = axios.put(`${baseUrl}/${id}`, newObject)
+const updateBeer = (restuarantId, beerId, newObject) => {
+    const request = axios.put(`${baseUrl}/${restuarantId}/beers/${beerId}`, newObject)
     return request.then(response => response.data)
 }
 

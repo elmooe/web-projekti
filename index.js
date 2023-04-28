@@ -56,7 +56,6 @@ app.get('/api/restaurants/:id/beers', (request, response) => {
     .catch(error => response.status(500).json({ error: error.message }))
 })
 
-
 //uusi ravintola ilman oluita
 app.post('/api/restaurants', (request, response, next) => {
     const body = request.body
@@ -74,7 +73,6 @@ app.post('/api/restaurants', (request, response, next) => {
         response.json(savedRestaurant)
     }).catch(error => next(error))
 })
-
 
 //uusi olut ravintolalle ravintolan id:n avulla
 app.post('/api/restaurants/:id/beers', (req, res) => {
@@ -119,7 +117,6 @@ app.get('/api/restaurants/beers', (request, response) => {
     .catch(error => response.status(500).json({ error: error.message }))
 })
 
-
 //poistaa halutusta ravintolasta halutun oluen
 app.delete('/api/restaurants/:restaurantId/beers/:beerId', (request, response, next) => {
   const { restaurantId, beerId } = request.params
@@ -147,11 +144,10 @@ app.delete('/api/restaurants/:restaurantId/beers/:beerId', (request, response, n
     .catch(error => next(error))
 })
 
-
 //päivittää oluen tiedot
-app.put('/api/restaurants/:id/beers', (req, res) => {
-  const { id } = req.params
-  const { name, type, brewery, percentage, price } = req.body
+app.put('/api/restaurants/:id/beers/:beerId', (req, res, next) => {
+  const { id, beerId } = req.params
+  const { price } = req.body
 
   Restaurant.findById(id)
     .then((restaurant) => {
@@ -159,21 +155,21 @@ app.put('/api/restaurants/:id/beers', (req, res) => {
         return res.status(404).json({ error: 'Ravintolaa ei löydy' })
       }
 
-      const newBeer = {
-        name: name,
-        type: type,
-        brewery: brewery,
-        percentage: percentage,
-        price: price,
+      const beerToUpdate = restaurant.beers.find(beer => beer.id === beerId)
+
+      if (!beerToUpdate) {
+        return res.status(404).json({ error: 'Olutta ei löydy' })
       }
-      
-      restaurant.beers.findByIdAndUpdate(req.params.id, newBeer, {new:true} )
+
+      beerToUpdate.price = price
+
+      restaurant.save()
         .then(() => {
-          res.json({ message: 'Olut lisätty ravintolan olutlistaan' })
+          res.json({ message: 'Olut päivitetty' })
         })
-        .catch(error => res.status(500).json({ error: error.message }))
+        .catch(error => next(error))
     })
-    .catch(error => res.status(500).json({ error: error.message }))
+    .catch(error => next(error))
 })
 
 app.use(unknownEndpoint)

@@ -1,0 +1,6 @@
+PUT http://localhost:3001/api/restaurants/6447d73e4c355e9ea71f235d/beers/644be6fbe4ea60423bab23d1
+Content-Type: application/json
+
+{
+    "price": "10"
+}

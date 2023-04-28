@@ -73,7 +73,6 @@ const App = () => {
   //lisää oluen halutulle ravintolalle
   const addBeer = (id) => {
     const restaurantToAdd = restaurants.find(restaurant => restaurant.id === id)
-
     const newBeer = {
       name: newName,
       type: newType,
@@ -117,13 +116,38 @@ const App = () => {
   }
 
   const editBeer = (id) => {
-    const beerToEdit = restaurants.find(beer => beer.id === id)
-    setNewName(beerToEdit.name)
-    setNewType(beerToEdit.type)
-    setNewBrewery(beerToEdit.brewery)
-    setNewPercentage(beerToEdit.percentage)
-    setNewPrice(beerToEdit.price)
+    const beerToEdit = restaurants.find(restaurant => restaurant.beers.some(beer => beer.id === id))
+    console.log(beerToEdit.id)
+    const updatedBeer = {
+      ...beerToEdit,
+      price: newPrice,
+    }
+    beerService
+      .updateBeer(beerToEdit.restaurantId, beerToEdit.id, updatedBeer)
+      .then(() => {
+        const updatedRestaurants = restaurants.map(restaurant => {
+          if (restaurant.id === beerToEdit.restaurantId) {
+            const updatedBeers = restaurant.beers.map(beer => {
+              if (beer.id === beerToEdit.id) {
+                return updatedBeer
+              }
+              return beer
+            })
+            return {
+              ...restaurant,
+              beers: updatedBeers,
+            }
+          }
+          return restaurant
+        })
+        setRestaurants(updatedRestaurants)
+        setNewPrice('')
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
+  
 
   const resetRFields = () => {
     setNewResName('')
