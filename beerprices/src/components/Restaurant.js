@@ -6,7 +6,7 @@ import { faSquarePlus } from '@fortawesome/free-solid-svg-icons'
 export const Restaurant = ({ restaurant, editRestaurant, addBeer }) => {
     return (
         <div className='Beer'>
-            <p>{restaurant.name} | Pints: III: {restaurant.pintIII}€ IV:{restaurant.pintIV}€</p>
+            <p>{restaurant.name} | Pints: III:{restaurant.pintIII}€ IV:{restaurant.pintIV}€</p>
             <FontAwesomeIcon icon={faPenToSquare} onClick={() => editRestaurant(restaurant.id)} />
             <FontAwesomeIcon icon={faSquarePlus} onClick={() => addBeer(restaurant.id)} />
         </div>

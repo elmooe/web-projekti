@@ -47,14 +47,14 @@ function Tabs(props) {
           <Filter filteredName={props.filteredName} handleFilter={props.handleFilter} />
           {props.list.map((restaurant) => (
             <div key={restaurant.id}>
-              <div onClick={() => handleRestaurantClick(restaurant.id)}>
-                <Restaurant restaurant={restaurant} addBeer={props.addBeer} />
+              <div>
+                <Restaurant restaurant={restaurant} addBeer={() => handleRestaurantClick(restaurant.id)} />
                 <div className='address'>
                   {restaurant.address}
                 </div>
               </div>
               {selectedRestaurantId === restaurant.id && showBeerForm && (
-                <BeerForm addBeer={props.addBeer} newName={props.newName} handleNewName={props.handleNewName}
+                <BeerForm restaurant={restaurant} addBeer={props.addBeer} newName={props.newName} handleNewName={props.handleNewName}
                           newType={props.newType} handleNewType={props.handleNewType}
                           newBrewery={props.newBrevery} handleNewBrewery={props.handleNewBrewery}
                           newPercentage={props.newPercentage} handleNewPercentage={props.handleNewPercentage}

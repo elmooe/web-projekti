@@ -1,8 +1,8 @@
-const BeerForm = ({ addBeer, newName, handleNewName, newType, handleNewType,
-                      newBrewery, handleNewBrewery, newPercentage, handleNewPercentage,
-                      newPrice, handleNewPrice }) => {
+const BeerForm = ({ restaurant, addBeer, newName, handleNewName, newType, handleNewType,
+                    newBrewery, handleNewBrewery, newPercentage, handleNewPercentage,
+                    newPrice, handleNewPrice }) => {
     return (
-      <form onSubmit={addBeer}>
+      <form onSubmit={() => addBeer(restaurant.id)}>
         <div>
         <h4>Add new beer</h4>
           name: <input value={newName} onChange={handleNewName} />
