@@ -78,11 +78,11 @@ function Tabs(props) {
 
               {restaurant.beers.map((beer) => (
                 <div key={beer.id}>
-                  <Beer beer={beer} editBeer={() => handleBeerClick(beer.id)}
-                        deleteBeer={props.deleteBeer} />
+                  <Beer beer={beer} editBeer={() => handleBeerClick(beer.id)} />
                   {selectedBeerId === beer.id && showEditBeerForm && (
                     <EditBeerForm beer={beer} editBeer={props.editBeer}
-                                  newPrice={props.newPrice} handleNewPrice={props.handleNewPrice} />
+                                  newPrice={props.newPrice} handleNewPrice={props.handleNewPrice}
+                                  deleteBeer={props.deleteBeer} />
                   )}
                 </div>
               ))}
