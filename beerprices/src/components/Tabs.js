@@ -4,11 +4,14 @@ import { Restaurant } from './Restaurant'
 import BeerForm from './BeerForm'
 import RestaurantForm from './RestaurantForm'
 import Filter from './Filter'
+import EditBeerForm from './EditBeerForm'
 
 function Tabs(props) {
   const [toggleState, setToggleState] = useState(1)
   const [showBeerForm, setShowBeerForm] = useState(false)
   const [selectedRestaurantId, setSelectedRestaurantId] = useState(null)
+  const [selectedBeerId, setSelectedBeerId] = useState(null)
+  const [showEditBeerForm, setShowEditBeerForm] = useState(false)
 
   const toggleTab = (index) => {
     setToggleState(index)
@@ -23,6 +26,17 @@ function Tabs(props) {
       setShowBeerForm(true)
     }
   }
+
+  const handleBeerClick = (id) => {
+    if (id === selectedBeerId) {
+      setSelectedBeerId(null)
+      setShowEditBeerForm(false)
+    } else {
+      setSelectedBeerId(id)
+      setShowEditBeerForm(true)
+    }
+  }
+  
 
   return (
     <div className="container">
@@ -54,7 +68,8 @@ function Tabs(props) {
                 </div>
               </div>
               {selectedRestaurantId === restaurant.id && showBeerForm && (
-                <BeerForm restaurant={restaurant} addBeer={props.addBeer} newName={props.newName} handleNewName={props.handleNewName}
+                <BeerForm restaurant={restaurant} addBeer={props.addBeer}
+                          newName={props.newName} handleNewName={props.handleNewName}
                           newType={props.newType} handleNewType={props.handleNewType}
                           newBrewery={props.newBrevery} handleNewBrewery={props.handleNewBrewery}
                           newPercentage={props.newPercentage} handleNewPercentage={props.handleNewPercentage}
@@ -63,7 +78,10 @@ function Tabs(props) {
 
               {restaurant.beers.map((beer) => (
                 <div key={beer.id}>
-                  <Beer beer={beer} editBeer={props.editBeer} deleteBeer={props.deleteBeer} />
+                  <Beer beer={beer} editBeer={() => handleBeerClick(beer.id)} deleteBeer={props.deleteBeer} />
+                  {selectedBeerId === beer.id && showEditBeerForm && (
+                    <EditBeerForm editBeer={beer} value={props.newPrice} />
+                  )}
                 </div>
               ))}
             </div>
