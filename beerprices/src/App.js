@@ -113,11 +113,40 @@ const App = () => {
     }
   }
 
-  const editBeer = (id, newPrice) => {
-    
+  const editBeer = (id) => {
+    const restaurantToUpdate = restaurants.find(restaurant => restaurant.beers.some(beer => beer.id === id))
+    if (!restaurantToUpdate) {
+      return
+    }
+  
+    const beerIndex = restaurantToUpdate.beers.findIndex(beer => beer.id === id)
+    const updatedBeer = {
+      ...restaurantToUpdate.beers[beerIndex],
+      price: newPrice,
+    }
+  
+    beerService
+      .updateBeer(restaurantToUpdate.id, id, updatedBeer)
+      .then(() => {
+        const updatedRestaurants = restaurants.map(restaurant => {
+          if (restaurant.id === restaurantToUpdate.id) {
+            const updatedBeers = [...restaurant.beers]
+            updatedBeers[beerIndex] = updatedBeer
+            return {
+              ...restaurant,
+              beers: updatedBeers,
+            }
+          }
+          return restaurant
+        })
+        setRestaurants(updatedRestaurants)
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
   
-
+  
   const resetRFields = () => {
     setNewResName('')
     setNewAddress('')
