@@ -73,6 +73,7 @@ const App = () => {
   //lisää oluen halutulle ravintolalle
   const addBeer = (id) => {
     const restaurantToAdd = restaurants.find(restaurant => restaurant.id === id)
+
     const newBeer = {
       name: newName,
       type: newType,
@@ -95,18 +96,15 @@ const App = () => {
   
   //poistaa halutun oluen listalta
   const deleteFromList = (id) => {
-    const restaurantIndex = restaurants.findIndex(restaurant => restaurant.beers.some(beer => beer.id === id))
-    if (restaurantIndex === -1) {
-      return
-    }
+    const restaurantId = restaurants.findIndex(restaurant => restaurant.beers.some(beer => beer.id === id))
   
-    const beerIndex = restaurants[restaurantIndex].beers.findIndex(beer => beer.id === id)
-    if (window.confirm(`Delete ${restaurants[restaurantIndex].beers[beerIndex].name} ?`)) {
+    const beerId = restaurants[restaurantId].beers.findIndex(beer => beer.id === id)
+    if (window.confirm(`Delete ${restaurants[restaurantId].beers[beerId].name} ?`)) {
       beerService
-        .deleteBeer(restaurants[restaurantIndex].id, id)
+        .deleteBeer(restaurants[restaurantId].id, id)
         .then(() => {
           const newRestaurants = [...restaurants];
-          newRestaurants[restaurantIndex].beers.splice(beerIndex, 1)
+          newRestaurants[restaurantId].beers.splice(beerId, 1)
           setRestaurants(newRestaurants)
         })
         .catch(error => {
@@ -115,37 +113,8 @@ const App = () => {
     }
   }
 
-  const editBeer = (id) => {
-    const beerToEdit = restaurants.find(restaurant => restaurant.beers.some(beer => beer.id === id))
-    console.log(beerToEdit.id)
-    const updatedBeer = {
-      ...beerToEdit,
-      price: newPrice,
-    }
-    beerService
-      .updateBeer(beerToEdit.restaurantId, beerToEdit.id, updatedBeer)
-      .then(() => {
-        const updatedRestaurants = restaurants.map(restaurant => {
-          if (restaurant.id === beerToEdit.restaurantId) {
-            const updatedBeers = restaurant.beers.map(beer => {
-              if (beer.id === beerToEdit.id) {
-                return updatedBeer
-              }
-              return beer
-            })
-            return {
-              ...restaurant,
-              beers: updatedBeers,
-            }
-          }
-          return restaurant
-        })
-        setRestaurants(updatedRestaurants)
-        setNewPrice('')
-      })
-      .catch(error => {
-        console.log(error)
-      })
+  const editBeer = (id, newPrice) => {
+    
   }
   
 

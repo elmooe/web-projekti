@@ -173,6 +173,7 @@ app.put('/api/restaurants/:id/beers/:beerId', (req, res, next) => {
 })
 
 app.use(unknownEndpoint)
+app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {

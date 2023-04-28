@@ -1,12 +1,12 @@
-const EditBeerForm = (props) => {
+const EditBeerForm = ({ beer, newPrice, handleNewPrice, editBeer }) => {
   return (
-    <form className='editBeerForm' onSubmit={() => props.editBeer(props.beer.id)}>
+    <form className='editBeerForm' onSubmit={() => editBeer(beer.id)}>
       <div>
-      new price: <input value={props.newPrice} onChange={props.handleNewPrice} />
+      new price: <input value={newPrice} onChange={handleNewPrice} />
       </div>
       <button type="submit">Save</button>
     </form>
   )
 }
 
-export default EditBeerForm;
+export default EditBeerForm
