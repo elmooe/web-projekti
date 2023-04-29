@@ -2,7 +2,6 @@ const EditRestaurantForm = ({editRestaurant, newPintIII, handleNewPintIII, newPi
 
     return (
         <form onSubmit={editRestaurant}>
-
         <div>
           pint III: <input value={newPintIII} onChange={handleNewPintIII} /> 
         </div>
