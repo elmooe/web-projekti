@@ -144,6 +144,34 @@ app.delete('/api/restaurants/:restaurantId/beers/:beerId', (request, response, n
     .catch(error => next(error))
 })
 
+//päivittää ravintolan tuopin tiedot
+app.put('/api/restaurants/:id/', (req, res, next) => {
+  const { id, beerId } = req.params
+  const { price } = req.body
+
+  Restaurant.findById(id)
+    .then((restaurant) => {
+      if (!restaurant) {
+        return res.status(404).json({ error: 'Ravintolaa ei löydy' })
+      }
+
+      const beerToUpdate = restaurant.beers.find(beer => beer.id === beerId)
+
+      if (!beerToUpdate) {
+        return res.status(404).json({ error: 'Olutta ei löydy' })
+      }
+
+      beerToUpdate.price = price
+
+      restaurant.save()
+        .then(() => {
+          res.json({ message: 'Olut päivitetty' })
+        })
+        .catch(error => next(error))
+    })
+    .catch(error => next(error))
+})
+
 //päivittää oluen tiedot
 app.put('/api/restaurants/:id/beers/:beerId', (req, res, next) => {
   const { id, beerId } = req.params

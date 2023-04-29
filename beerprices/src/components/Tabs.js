@@ -5,6 +5,7 @@ import BeerForm from './BeerForm'
 import RestaurantForm from './RestaurantForm'
 import Filter from './Filter'
 import EditBeerForm from './EditBeerForm'
+import EditRestaurantForm from './EditRestaurantForm'
 
 function Tabs(props) {
   const [toggleState, setToggleState] = useState(1)
@@ -12,6 +13,9 @@ function Tabs(props) {
   const [selectedRestaurantId, setSelectedRestaurantId] = useState(null)
   const [selectedBeerId, setSelectedBeerId] = useState(null)
   const [showEditBeerForm, setShowEditBeerForm] = useState(false)
+  const [selectedPintId, setSelectedPintId] =useState(null)
+  const [showEditRestaurantForm, setShowEditRestaurantForm] = useState(false)
+  
 
   const toggleTab = (index) => {
     setToggleState(index)
@@ -34,6 +38,16 @@ function Tabs(props) {
     } else {
       setSelectedBeerId(id)
       setShowEditBeerForm(true)
+    }
+  }
+
+  const handleRestaurantEditClick = (id) => {
+    if (id === selectedPintId){
+      setSelectedPintId(null)
+      setShowEditRestaurantForm(false)
+    } else{
+      setSelectedPintId(id)
+      setShowEditRestaurantForm(true)
     }
   }
   
@@ -62,7 +76,12 @@ function Tabs(props) {
           {props.list.map((restaurant) => (
             <div key={restaurant.id}>
               <div>
-                <Restaurant restaurant={restaurant} addBeer={() => handleRestaurantClick(restaurant.id)} />
+                <Restaurant restaurant={restaurant} editRestaurant={() => handleRestaurantEditClick(restaurant.id)} addBeer={() => handleRestaurantClick(restaurant.id)} />
+                {selectedPintId === restaurant.id && showEditRestaurantForm && (
+                  <EditRestaurantForm restaurant={restaurant} 
+                  newPintIII={props.newPintIII} handleNewPintIII={props.handleNewPintIII} 
+                  newPintIV={props.newPintIV} handleNewPintIV={props.handleNewPintIV}  />
+                )}
                 <div className='address'>
                   {restaurant.address}
                 </div>

@@ -159,17 +159,11 @@ const App = () => {
     event.preventDefault()
     const restaurantToUpdate = restaurants.find(restaurant => restaurant.name === newResName)
     if (restaurants.some(restaurant => restaurant.name === newResName)) {
-      if (window.confirm(`${newResName} update info?`)) {
-        
-        var replacedRestaurant
-  
-        if((newPintIII && newPintIV) === null || (newPintIII && newPintIV) === ""){
-          replacedRestaurant = {...restaurantToUpdate, address: newAddress}
-        } else if (newPintIII === null || newPintIII === ""){
-          replacedRestaurant = {...restaurantToUpdate, address: newAddress, pintIv: newPintIV}
-        } else if (newPintIV === null || newPintIV === ""){
-          replacedRestaurant = {...restaurantToUpdate, address: newAddress, pintIII: newPintIII}
-        } else {replacedRestaurant = {...restaurantToUpdate, address: newAddress, pintIII: newPintIII, pintIV: newPintIV}}
+      if (window.confirm(`${newResName} update info?`)) {       
+
+
+         const replacedRestaurant = {...restaurantToUpdate, address: newAddress}
+
   
         beerService
         .updateBeer(restaurantToUpdate.id, replacedRestaurant)
@@ -201,6 +195,34 @@ const App = () => {
       })
     }
   }
+
+  const editRestaurant = (event) => {
+    event.preventDefault()
+    const restaurantToUpdate = restaurants.find(restaurant => restaurant.name === newResName)
+    
+      if (window.confirm(`${restaurantToUpdate.name} update info?`)) {
+        
+        var replacedRestaurant
+  
+        if((newPintIII && newPintIV) === null || (newPintIII && newPintIV) === ""){
+          replacedRestaurant = {...restaurantToUpdate, address: newAddress}
+        } else if (newPintIII === null || newPintIII === ""){
+          replacedRestaurant = {...restaurantToUpdate, address: newAddress, pintIV: newPintIV}
+        } else if (newPintIV === null || newPintIV === ""){
+          replacedRestaurant = {...restaurantToUpdate, address: newAddress, pintIII: newPintIII}
+        } else {replacedRestaurant = {...restaurantToUpdate, address: newAddress, pintIII: newPintIII, pintIV: newPintIV}}
+  
+        beerService
+        .updatePint(restaurantToUpdate.id, replacedRestaurant)
+        .then(returnedRestaurant => {
+          setRestaurants(restaurants.map(restaurant => restaurant.id !== restaurantToUpdate.id ? restaurant : returnedRestaurant))
+          resetRFields()
+        })
+      } else { 
+        resetRFields()
+      }
+    }       
+      
   
   const filteredRestaurants = filteredName === ''
     ? restaurants : restaurants.filter(restaurant => restaurant.name.toLowerCase().includes(filteredName.toLowerCase()))
@@ -220,6 +242,7 @@ const App = () => {
             newAddress={newAddress} handleNewAddress={handleNewAddress} 
             newPintIII={newPintIII} handleNewPintIII={handleNewPintIII}
             newPintIV={newPintIV} handleNewPintIV={handleNewPintIV}
+            editRestaurant={editRestaurant}
       />
     </div>
   )

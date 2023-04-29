@@ -31,6 +31,12 @@ const updateBeer = (restuarantId, beerId, newObject) => {
     return request.then(response => response.data)
 }
 
+//tuopin päivitys ravintolalle
+const updatePint = (restaurantId, newObject) => {
+    const request = axios.put(`${baseUrl}/${restaurantId}`, newObject)
+    return request.then(response => response.data)
+}
+
 const beerService = { create, getAll, deleteBeer, updateBeer, createBeer };
 
 export default beerService;
