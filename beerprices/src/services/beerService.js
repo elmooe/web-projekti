@@ -37,6 +37,6 @@ const updatePint = (restaurantId, newObject) => {
     return request.then(response => response.data)
 }
 
-const beerService = { create, getAll, deleteBeer, updateBeer, createBeer };
+const beerService = { create, getAll, deleteBeer, updateBeer, createBeer, updatePint };
 
 export default beerService;

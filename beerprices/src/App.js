@@ -196,21 +196,25 @@ const App = () => {
     }
   }
 
-  const editRestaurant = (event) => {
+  const editRestaurant = (event, id) => {
     event.preventDefault()
-    const restaurantToUpdate = restaurants.find(restaurant => restaurant.name === newResName)
+    const restaurantToUpdate = restaurants.find(restaurant => restaurant.id === id)
     
       if (window.confirm(`${restaurantToUpdate.name} update info?`)) {
         
+
+        const replacedRestaurant = {...restaurantToUpdate, pintIII:newPintIII, pintIV:newPintIII}
+
+        /*
         var replacedRestaurant
   
-        if((newPintIII && newPintIV) === null || (newPintIII && newPintIV) === ""){
-          replacedRestaurant = {...restaurantToUpdate, address: newAddress}
+        if((newPintIII && newPintIV) !== null || (newPintIII && newPintIV) !== ""){
+          replacedRestaurant = {...restaurantToUpdate, address: newAddress, pintIII: newPintIII, pintIV: newPintIV}
         } else if (newPintIII === null || newPintIII === ""){
           replacedRestaurant = {...restaurantToUpdate, address: newAddress, pintIV: newPintIV}
-        } else if (newPintIV === null || newPintIV === ""){
+        } else if (newPintIV === null || newPintIV === "") {
           replacedRestaurant = {...restaurantToUpdate, address: newAddress, pintIII: newPintIII}
-        } else {replacedRestaurant = {...restaurantToUpdate, address: newAddress, pintIII: newPintIII, pintIV: newPintIV}}
+        }*/
   
         beerService
         .updatePint(restaurantToUpdate.id, replacedRestaurant)

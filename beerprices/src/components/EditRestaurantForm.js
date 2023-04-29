@@ -1,4 +1,4 @@
-const EditRestaurantForm = ({editRestaurant, newPintIII, handleNewPintIII, newPintIV, handleNewPintIV }) => {
+const EditRestaurantForm = ({restaurant, editRestaurant, newPintIII, handleNewPintIII, newPintIV, handleNewPintIV }) => {
 
     return (
         <form onSubmit={editRestaurant}>
