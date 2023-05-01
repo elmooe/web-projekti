@@ -179,3 +179,21 @@ button {
   cursor: pointer;
   font-weight: 700;
 }
+
+.editRestaurantForm {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgb(179, 179, 179);
+  border-radius: 5px;
+  color: #fff;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.small {
+  height: 40px;
+  width: 70px;  
+}

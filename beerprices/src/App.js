@@ -195,15 +195,7 @@ const App = () => {
     const restaurantToUpdate = restaurants.find(restaurant => restaurant.id === id)
     if (window.confirm(`${restaurantToUpdate.name} update info?`)) {
 
-      var replacedRestaurant
-
-      if ((newPintIII && newPintIV) !== null || (newPintIII && newPintIV) !== "") {
-        replacedRestaurant = { ...restaurantToUpdate, address: newAddress, pintIII: newPintIII, pintIV: newPintIV }
-      } else if (newPintIII === null || newPintIII === "") {
-        replacedRestaurant = { ...restaurantToUpdate, address: newAddress, pintIV: newPintIV }
-      } else if (newPintIV === null || newPintIV === "") {
-        replacedRestaurant = { ...restaurantToUpdate, address: newAddress, pintIII: newPintIII }
-      }
+      const replacedRestaurant = { ...restaurantToUpdate, address: newAddress, pintIII: newPintIII, pintIV: newPintIV }
 
       beerService
         .updatePint(restaurantToUpdate.id, replacedRestaurant)
