@@ -13,9 +13,9 @@ function Tabs(props) {
   const [selectedRestaurantId, setSelectedRestaurantId] = useState(null)
   const [selectedBeerId, setSelectedBeerId] = useState(null)
   const [showEditBeerForm, setShowEditBeerForm] = useState(false)
-  const [selectedPintId, setSelectedPintId] =useState(null)
+  const [selectedPintId, setSelectedPintId] = useState(null)
   const [showEditRestaurantForm, setShowEditRestaurantForm] = useState(false)
-  
+
 
   const toggleTab = (index) => {
     setToggleState(index)
@@ -42,15 +42,14 @@ function Tabs(props) {
   }
 
   const handleRestaurantEditClick = (id) => {
-    if (id === selectedPintId){
+    if (id === selectedPintId) {
       setSelectedPintId(null)
       setShowEditRestaurantForm(false)
-    } else{
+    } else {
       setSelectedPintId(id)
       setShowEditRestaurantForm(true)
     }
   }
-  
 
   return (
     <div className="container">
@@ -79,8 +78,8 @@ function Tabs(props) {
                 <Restaurant restaurant={restaurant} editRestaurant={() => handleRestaurantEditClick(restaurant.id)} addBeer={() => handleRestaurantClick(restaurant.id)} />
                 {selectedPintId === restaurant.id && showEditRestaurantForm && (
                   <EditRestaurantForm restaurant={restaurant} editRestaurant={props.editRestaurant}
-                  newPintIII={props.newPintIII} handleNewPintIII={props.handleNewPintIII} 
-                  newPintIV={props.newPintIV} handleNewPintIV={props.handleNewPintIV}  />
+                    newPintIII={props.newPintIII} handleNewPintIII={props.handleNewPintIII}
+                    newPintIV={props.newPintIV} handleNewPintIV={props.handleNewPintIV} />
                 )}
                 <div className='address'>
                   {restaurant.address}
@@ -88,20 +87,19 @@ function Tabs(props) {
               </div>
               {selectedRestaurantId === restaurant.id && showBeerForm && (
                 <BeerForm restaurant={restaurant} addBeer={props.addBeer}
-                          newName={props.newName} handleNewName={props.handleNewName}
-                          newType={props.newType} handleNewType={props.handleNewType}
-                          newBrewery={props.newBrevery} handleNewBrewery={props.handleNewBrewery}
-                          newPercentage={props.newPercentage} handleNewPercentage={props.handleNewPercentage}
-                          newPrice={props.newPrice} handleNewPrice={props.handleNewPrice} />
+                  newName={props.newName} handleNewName={props.handleNewName}
+                  newType={props.newType} handleNewType={props.handleNewType}
+                  newBrewery={props.newBrevery} handleNewBrewery={props.handleNewBrewery}
+                  newPercentage={props.newPercentage} handleNewPercentage={props.handleNewPercentage}
+                  newPrice={props.newPrice} handleNewPrice={props.handleNewPrice} />
               )}
-
               {restaurant.beers.map((beer) => (
                 <div key={beer.id}>
                   <Beer beer={beer} editBeer={() => handleBeerClick(beer.id)} />
                   {selectedBeerId === beer.id && showEditBeerForm && (
                     <EditBeerForm beer={beer} editBeer={props.editBeer}
-                                  newPrice={props.newPrice} handleNewPrice={props.handleNewPrice}
-                                  deleteBeer={props.deleteBeer} />
+                      newPrice={props.newPrice} handleNewPrice={props.handleNewPrice}
+                      deleteBeer={props.deleteBeer} />
                   )}
                 </div>
               ))}
@@ -110,11 +108,11 @@ function Tabs(props) {
         </div>
         <div className={toggleState === 2 ? "content  active-content" : "content"} >
           <h2 className='contenth2'>Add a bar or a restaurant</h2>
-          <RestaurantForm addRestaurant={props.addRestaurant} 
-                          newResName={props.newResName} handleNewResName={props.handleNewResName} 
-                          newAddress={props.newAddress} handleNewAddress={props.handleNewAddress} 
-                          newPintIII={props.newPintIII} handleNewPintIII={props.handleNewPintIII}
-                          newPintIV={props.newPintIV} handleNewPintIV={props.handleNewPintIV} />
+          <RestaurantForm addRestaurant={props.addRestaurant}
+            newResName={props.newResName} handleNewResName={props.handleNewResName}
+            newAddress={props.newAddress} handleNewAddress={props.handleNewAddress}
+            newPintIII={props.newPintIII} handleNewPintIII={props.handleNewPintIII}
+            newPintIV={props.newPintIV} handleNewPintIV={props.handleNewPintIV} />
         </div>
       </div>
     </div>

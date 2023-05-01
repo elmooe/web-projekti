@@ -4,7 +4,7 @@ import beerService from './services/beerService'
 import Tabs from './components/Tabs'
 
 const App = () => {
-  const [restaurants, setRestaurants] = useState([]) 
+  const [restaurants, setRestaurants] = useState([])
   const [newName, setNewName] = useState('')
   const [newType, setNewType] = useState('')
   const [newBrevery, setNewBrewery] = useState('')
@@ -84,7 +84,7 @@ const App = () => {
     beerService
       .createBeer(restaurantToAdd.id, newBeer)
       .then(returnedBeer => {
-        const updatedRestaurants = restaurants.map(restaurant => restaurant.id === id ? {...restaurant, beers: restaurant.beers.concat(returnedBeer)} : restaurant)
+        const updatedRestaurants = restaurants.map(restaurant => restaurant.id === id ? { ...restaurant, beers: restaurant.beers.concat(returnedBeer) } : restaurant)
         setRestaurants(updatedRestaurants)
         resetFields()
       })
@@ -93,11 +93,11 @@ const App = () => {
         resetFields()
       })
   }
-  
+
   //poistaa halutun oluen listalta
   const deleteFromList = (id) => {
     const restaurantId = restaurants.findIndex(restaurant => restaurant.beers.some(beer => beer.id === id))
-  
+
     const beerId = restaurants[restaurantId].beers.findIndex(beer => beer.id === id)
     if (window.confirm(`Delete ${restaurants[restaurantId].beers[beerId].name} ?`)) {
       beerService
@@ -118,13 +118,13 @@ const App = () => {
     if (!restaurantToUpdate) {
       return
     }
-  
+
     const beerIndex = restaurantToUpdate.beers.findIndex(beer => beer.id === id)
     const updatedBeer = {
       ...restaurantToUpdate.beers[beerIndex],
       price: newPrice,
     }
-  
+
     beerService
       .updateBeer(restaurantToUpdate.id, id, updatedBeer)
       .then(() => {
@@ -145,8 +145,7 @@ const App = () => {
         console.log(error)
       })
   }
-  
-  
+
   const resetRFields = () => {
     setNewResName('')
     setNewAddress('')
@@ -159,19 +158,16 @@ const App = () => {
     event.preventDefault()
     const restaurantToUpdate = restaurants.find(restaurant => restaurant.name === newResName)
     if (restaurants.some(restaurant => restaurant.name === newResName)) {
-      if (window.confirm(`${newResName} update info?`)) {       
+      if (window.confirm(`${newResName} update info?`)) {
+        const replacedRestaurant = { ...restaurantToUpdate, address: newAddress }
 
-
-         const replacedRestaurant = {...restaurantToUpdate, address: newAddress}
-
-  
         beerService
-        .updateBeer(restaurantToUpdate.id, replacedRestaurant)
-        .then(returnedRestaurant => {
-          setRestaurants(restaurants.map(restaurant => restaurant.id !== restaurantToUpdate.id ? restaurant : returnedRestaurant))
-          resetRFields()
-        })
-      } else { 
+          .updateBeer(restaurantToUpdate.id, replacedRestaurant)
+          .then(returnedRestaurant => {
+            setRestaurants(restaurants.map(restaurant => restaurant.id !== restaurantToUpdate.id ? restaurant : returnedRestaurant))
+            resetRFields()
+          })
+      } else {
         resetRFields()
       }
     } else {
@@ -182,71 +178,63 @@ const App = () => {
         pintIV: newPintIV,
         beers: []
       }
-      
       beerService
-      .create(newRestaurant)
-      .then(createdRestaurant => {
-        setRestaurants(restaurants.concat(createdRestaurant))
-        resetRFields()
-      })
-      .catch(error => {
-        console.log(error.response.data)
-        resetRFields()
-      })
+        .create(newRestaurant)
+        .then(createdRestaurant => {
+          setRestaurants(restaurants.concat(createdRestaurant))
+          resetRFields()
+        })
+        .catch(error => {
+          console.log(error.response.data)
+          resetRFields()
+        })
     }
   }
 
   const editRestaurant = (id) => {
-    
     const restaurantToUpdate = restaurants.find(restaurant => restaurant.id === id)
-    
-      if (window.confirm(`${restaurantToUpdate.name} update info?`)) {
-        
+    if (window.confirm(`${restaurantToUpdate.name} update info?`)) {
 
-       // const replacedRestaurant = {...restaurantToUpdate, pintIII:newPintIII, pintIV:newPintIV}
+      var replacedRestaurant
 
-        
-        var replacedRestaurant
-  
-        if((newPintIII && newPintIV) !== null || (newPintIII && newPintIV) !== ""){
-          replacedRestaurant = {...restaurantToUpdate, address: newAddress, pintIII: newPintIII, pintIV: newPintIV}
-        } else if (newPintIII === null || newPintIII === ""){
-          replacedRestaurant = {...restaurantToUpdate, address: newAddress, pintIV: newPintIV}
-        } else if (newPintIV === null || newPintIV === "") {
-          replacedRestaurant = {...restaurantToUpdate, address: newAddress, pintIII: newPintIII}
-        }
-  
-        beerService
+      if ((newPintIII && newPintIV) !== null || (newPintIII && newPintIV) !== "") {
+        replacedRestaurant = { ...restaurantToUpdate, address: newAddress, pintIII: newPintIII, pintIV: newPintIV }
+      } else if (newPintIII === null || newPintIII === "") {
+        replacedRestaurant = { ...restaurantToUpdate, address: newAddress, pintIV: newPintIV }
+      } else if (newPintIV === null || newPintIV === "") {
+        replacedRestaurant = { ...restaurantToUpdate, address: newAddress, pintIII: newPintIII }
+      }
+
+      beerService
         .updatePint(restaurantToUpdate.id, replacedRestaurant)
         .then(returnedRestaurant => {
           setRestaurants(restaurants.map(restaurant => restaurant.id !== restaurantToUpdate.id ? restaurant : returnedRestaurant))
           resetRFields()
         })
-      } else { 
-        resetRFields()
-      }
-    }       
-      
-  
+    } else {
+      resetRFields()
+    }
+  }
+
   const filteredRestaurants = filteredName === ''
     ? restaurants : restaurants.filter(restaurant => restaurant.name.toLowerCase().includes(filteredName.toLowerCase()))
 
   return (
     <div>
       <Tabs filteredName={filteredName} handleFilter={handleFilter}
-            list={filteredRestaurants} editBeer={editBeer}
-            deleteBeer={deleteFromList} addBeer={addBeer}
-            newName={newName} handleNewName={handleNewName}
-            newType={newType} handleNewType={handleNewType}
-            newBrewery={newBrevery} handleNewBrewery={handleNewBrewery}
-            newPercentage={newPercentage} handleNewPercentage={handleNewPercentage}
-            newPrice={newPrice} handleNewPrice={handleNewPrice}
-            addRestaurant={addRestaurant}
-            newResName={newResName} handleNewResName={handleNewResName} 
-            newAddress={newAddress} handleNewAddress={handleNewAddress} 
-            newPintIII={newPintIII} handleNewPintIII={handleNewPintIII}
-            newPintIV={newPintIV} handleNewPintIV={handleNewPintIV}
-            editRestaurant={editRestaurant}
+        list={filteredRestaurants} editBeer={editBeer}
+        deleteBeer={deleteFromList} addBeer={addBeer}
+        newName={newName} handleNewName={handleNewName}
+        newType={newType} handleNewType={handleNewType}
+        newBrewery={newBrevery} handleNewBrewery={handleNewBrewery}
+        newPercentage={newPercentage} handleNewPercentage={handleNewPercentage}
+        newPrice={newPrice} handleNewPrice={handleNewPrice}
+        addRestaurant={addRestaurant}
+        newResName={newResName} handleNewResName={handleNewResName}
+        newAddress={newAddress} handleNewAddress={handleNewAddress}
+        newPintIII={newPintIII} handleNewPintIII={handleNewPintIII}
+        newPintIV={newPintIV} handleNewPintIV={handleNewPintIV}
+        editRestaurant={editRestaurant}
       />
     </div>
   )

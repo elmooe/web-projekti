@@ -14,15 +14,15 @@ const requestLogger = (request, response, next) => {
 }
 
 const errorHandler = (error, request, response, next) => {
-    console.error(error.message)
-  
-    if (error.name === 'CastError') {
-      return response.status(400).send({ error: 'malformatted id' })
-    } else if (error.name === 'ValidationError') {
-      return response.status(400).json({ error: error.message })
-    }
-  
-    next(error)
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
+  }
+
+  next(error)
 }
 
 const unknownEndpoint = (request, response) => {
@@ -58,19 +58,19 @@ app.get('/api/restaurants/:id/beers', (request, response) => {
 
 //uusi ravintola ilman oluita
 app.post('/api/restaurants', (request, response, next) => {
-    const body = request.body
-  
-    const newRestaurant = new Restaurant({
-      name: body.name,
-      address: body.address,
-      pintIII: body.pintIII,
-      pintIV: body.pintIV,
-      beers: []
-    })
+  const body = request.body
 
-    newRestaurant.save()
-      .then(savedRestaurant => {
-        response.json(savedRestaurant)
+  const newRestaurant = new Restaurant({
+    name: body.name,
+    address: body.address,
+    pintIII: body.pintIII,
+    pintIV: body.pintIV,
+    beers: []
+  })
+
+  newRestaurant.save()
+    .then(savedRestaurant => {
+      response.json(savedRestaurant)
     }).catch(error => next(error))
 })
 
@@ -92,7 +92,7 @@ app.post('/api/restaurants/:id/beers', (req, res) => {
         percentage: percentage,
         price: price,
       }
-      
+
       restaurant.beers.push(newBeer)
 
       restaurant.save()
@@ -149,16 +149,14 @@ app.put('/api/restaurants/:id', (req, res, next) => {
   const { id } = req.params
   const { pintIII, pintIV } = req.body
 
-  console.log(id, pintIII, pintIV)
-
   Restaurant.findById(id)
-    .then((restaurant) => {      
+    .then((restaurant) => {
       if (!restaurant) {
         return res.status(404).json({ error: 'Ravintolaa ei löydy' })
-      }      
+      }
 
       restaurant.pintIII = pintIII || restaurant.pintIII
-      restaurant.pintIV = pintIV || restaurant.pintIII
+      restaurant.pintIV = pintIV || restaurant.pintIV
 
       restaurant.save()
         .then(() => {
