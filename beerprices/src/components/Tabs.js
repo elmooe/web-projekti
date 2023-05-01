@@ -78,7 +78,7 @@ function Tabs(props) {
               <div>
                 <Restaurant restaurant={restaurant} editRestaurant={() => handleRestaurantEditClick(restaurant.id)} addBeer={() => handleRestaurantClick(restaurant.id)} />
                 {selectedPintId === restaurant.id && showEditRestaurantForm && (
-                  <EditRestaurantForm restaurant={restaurant} 
+                  <EditRestaurantForm restaurant={restaurant} editRestaurant={props.editRestaurant}
                   newPintIII={props.newPintIII} handleNewPintIII={props.handleNewPintIII} 
                   newPintIV={props.newPintIV} handleNewPintIV={props.handleNewPintIV}  />
                 )}

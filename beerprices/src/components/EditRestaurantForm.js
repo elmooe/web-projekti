@@ -1,7 +1,7 @@
 const EditRestaurantForm = ({restaurant, editRestaurant, newPintIII, handleNewPintIII, newPintIV, handleNewPintIV }) => {
 
     return (
-        <form onSubmit={editRestaurant}>
+        <form className='editRestaurantForm' onSubmit={()=>editRestaurant(restaurant.id)}>
         <div>
           pint III: <input value={newPintIII} onChange={handleNewPintIII} /> 
         </div>
