@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: App.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: App.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * This is the main component of the application that renders Tabs and manages the state of the application.
+ * @returns {JSX.Element} - The root element of the application.
+*/
+import './App.css'
+import { useState, useEffect } from 'react'
+import beerService from './services/beerService'
+import Tabs from './components/Tabs'
+
+const App = () => {
+  // State for restaurant-related information.
+  const [restaurants, setRestaurants] = useState([]) // List of all restaurants.
+  const [newResName, setNewResName] = useState('') // Name of a new restaurant.
+  const [newAddress, setNewAddress] = useState('') // Address of a new restaurant.
+  const [newPintIII, setNewPintIII] = useState('') // Pint III of a new restaurant.
+  const [newPintIV, setNewPintIV] = useState('') // Pint IV of a new restaurant.
+
+  // State for beer-related information.
+  const [newName, setNewName] = useState('') // Name of a new beer.
+  const [newType, setNewType] = useState('') // Type of a new beer.
+  const [newBrevery, setNewBrewery] = useState('') // Brewery of a new beer.
+  const [newPercentage, setNewPercentage] = useState('') // Percentage of a new beer.
+  const [newPrice, setNewPrice] = useState('') // Price of a new beer.
+  const [filteredName, setFilteredName] = useState('') // Name to filter beers by.
+
+  /**
+   * This effect is executed only once when the component is mounted. It fetches all restaurants from the database
+   * using the beerService.
+   */
+  useEffect(() => {
+    beerService
+      .getAll()
+      .then(initialList => {
+        setRestaurants(initialList)
+      })
+  }, [])
+
+  /**
+   * Sets the state for the new beer name based on the input value
+   * @param {object} event - The event object triggered by the input element
+   */
+  const handleNewName = (event) => {
+    setNewName(event.target.value)
+  }
+
+  /**
+   * Sets the state for the new beer type based on the input value
+   * @param {object} event - The event object triggered by the input element
+   */
+  const handleNewType = (event) => {
+    setNewType(event.target.value)
+  }
+
+  /**
+   * Sets the state for the new beer brewery based on the input value
+   * @param {object} event - The event object triggered by the input element
+   */
+  const handleNewBrewery = (event) => {
+    setNewBrewery(event.target.value)
+  }
+
+  /**
+   * Sets the state for the new beer percentage based on the input value
+   * @param {object} event - The event object triggered by the input element
+   */
+  const handleNewPercentage = (event) => {
+    setNewPercentage(event.target.value)
+  }
+
+  /**
+   * Sets the state for the new beer price based on the input value
+   * @param {object} event - The event object triggered by the input element
+   */
+  const handleNewPrice = (event) => {
+    setNewPrice(event.target.value)
+  }
+
+  /**
+   * Sets the state for the filtered beer name based on the input value
+   * @param {object} event - The event object triggered by the input element
+   */
+  const handleFilter = (event) => {
+    setFilteredName(event.target.value)
+  }
+
+  /**
+   * This function updates the state of the newResName variable when the user types a new name in the input field.
+   * @param {Object} event - The event object that triggered this function.
+   */
+  const handleNewResName = (event) => {
+    setNewResName(event.target.value)
+  }
+
+  /**
+   * This function updates the state of the newAddress variable when the user types a new address in the input field.
+   * @param {Object} event - The event object that triggered this function.
+   */
+  const handleNewAddress = (event) => {
+    setNewAddress(event.target.value)
+  }
+
+  /**
+   * This function updates the state of the newPintIII variable when the user types a new Pint III in the input field.
+   * @param {Object} event - The event object that triggered this function.
+   */
+  const handleNewPintIII = (event) => {
+    setNewPintIII(event.target.value)
+  }
+
+  /**
+   * This function updates the state of the newPintIV variable when the user types a new Pint IV in the input field.
+   * @param {Object} event - The event object that triggered this function.
+   */
+  const handleNewPintIV = (event) => {
+    setNewPintIV(event.target.value)
+  }
+
+  /**
+   * This function resets the input fields for a new beer.
+   */
+  const resetFields = () => {
+    setNewName('')
+    setNewType('')
+    setNewBrewery('')
+    setNewPercentage('')
+    setNewPrice('')
+  }
+
+  /**
+   * Adds a beer to the desired restaurant.
+   *
+   * @param {string} id - The ID of the restaurant where the beer will be added.
+   */
+  const addBeer = (id) => {
+    const restaurantToAdd = restaurants.find(restaurant => restaurant.id === id)
+
+    const newBeer = {
+      name: newName,
+      type: newType,
+      brewery: newBrevery,
+      percentage: newPercentage,
+      price: newPrice,
+    }
+    beerService
+      .createBeer(restaurantToAdd.id, newBeer)
+      .then(returnedBeer => {
+        const updatedRestaurants = restaurants.map(restaurant => restaurant.id === id ? { ...restaurant, beers: restaurant.beers.concat(returnedBeer) } : restaurant)
+        setRestaurants(updatedRestaurants)
+        resetFields()
+      })
+      .catch(error => {
+        console.log(error.response.data)
+        resetFields()
+      })
+  }
+
+  /**
+   * Deletes a beer from the list.
+   *
+   * @param {string} id - The ID of the beer to be deleted.
+   */
+  const deleteFromList = (id) => {
+    const restaurantId = restaurants.findIndex(restaurant => restaurant.beers.some(beer => beer.id === id))
+
+    const beerId = restaurants[restaurantId].beers.findIndex(beer => beer.id === id)
+    if (window.confirm(`Delete ${restaurants[restaurantId].beers[beerId].name} ?`)) {
+      beerService
+        .deleteBeer(restaurants[restaurantId].id, id)
+        .then(() => {
+          const newRestaurants = [...restaurants];
+          newRestaurants[restaurantId].beers.splice(beerId, 1)
+          setRestaurants(newRestaurants)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
+  }
+
+  /**
+   * Updates the price of a beer.
+   *
+   * @param {string} id - The ID of the beer to be edited.
+   */
+  const editBeer = (id) => {
+    const restaurantToUpdate = restaurants.find(restaurant => restaurant.beers.some(beer => beer.id === id))
+    if (!restaurantToUpdate) {
+      return
+    }
+
+    const beerIndex = restaurantToUpdate.beers.findIndex(beer => beer.id === id)
+    const updatedBeer = {
+      ...restaurantToUpdate.beers[beerIndex],
+      price: newPrice,
+    }
+
+    beerService
+      .updateBeer(restaurantToUpdate.id, id, updatedBeer)
+      .then(() => {
+        const updatedRestaurants = restaurants.map(restaurant => {
+          if (restaurant.id === restaurantToUpdate.id) {
+            const updatedBeers = [...restaurant.beers]
+            updatedBeers[beerIndex] = updatedBeer
+            return {
+              ...restaurant,
+              beers: updatedBeers,
+            }
+          }
+          return restaurant
+        })
+        setRestaurants(updatedRestaurants)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
+  /**
+   * Resets the fields of the new restaurant form.
+   */
+  const resetRFields = () => {
+    setNewResName('')
+    setNewAddress('')
+    setNewPintIII('')
+    setNewPintIV('')
+  }
+
+  /**
+   * Adds a new restaurant without any beers.
+   *
+   * @param {Event} event - The event that triggered the function.
+   */
+  const addRestaurant = (event) => {
+    event.preventDefault()
+    const restaurantToUpdate = restaurants.find(restaurant => restaurant.name === newResName)
+    if (restaurants.some(restaurant => restaurant.name === newResName)) {
+      if (window.confirm(`${newResName} update info?`)) {
+        const replacedRestaurant = { ...restaurantToUpdate, address: newAddress }
+
+        beerService
+          .updateBeer(restaurantToUpdate.id, replacedRestaurant)
+          .then(returnedRestaurant => {
+            setRestaurants(restaurants.map(restaurant => restaurant.id !== restaurantToUpdate.id ? restaurant : returnedRestaurant))
+            resetRFields()
+          })
+      } else {
+        resetRFields()
+      }
+    } else {
+      const newRestaurant = {
+        name: newResName,
+        address: newAddress,
+        pintIII: newPintIII,
+        pintIV: newPintIV,
+        beers: []
+      }
+      beerService
+        .create(newRestaurant)
+        .then(createdRestaurant => {
+          setRestaurants(restaurants.concat(createdRestaurant))
+          resetRFields()
+        })
+        .catch(error => {
+          console.log(error.response.data)
+          resetRFields()
+        })
+    }
+  }
+
+  /**
+   * Updates the information of an existing restaurant.
+   *
+   * @param {string} id - The ID of the restaurant to be edited.
+   */
+  const editRestaurant = (id) => {
+    const restaurantToUpdate = restaurants.find(restaurant => restaurant.id === id)
+    if (window.confirm(`${restaurantToUpdate.name} update info?`)) {
+
+      const replacedRestaurant = { ...restaurantToUpdate, address: newAddress, pintIII: newPintIII, pintIV: newPintIV }
+
+      beerService
+        .updatePint(restaurantToUpdate.id, replacedRestaurant)
+        .then(returnedRestaurant => {
+          setRestaurants(restaurants.map(restaurant => restaurant.id !== restaurantToUpdate.id ? restaurant : returnedRestaurant))
+          resetRFields()
+        })
+    } else {
+      resetRFields()
+    }
+  }
+
+  const filteredRestaurants = filteredName === ''
+    ? restaurants : restaurants.filter(restaurant => restaurant.name.toLowerCase().includes(filteredName.toLowerCase()))
+
+  return (
+    &lt;div>
+      &lt;Tabs filteredName={filteredName} handleFilter={handleFilter}
+            list={filteredRestaurants} editBeer={editBeer}
+            deleteBeer={deleteFromList} addBeer={addBeer}
+            newName={newName} handleNewName={handleNewName}
+            newType={newType} handleNewType={handleNewType}
+            newBrewery={newBrevery} handleNewBrewery={handleNewBrewery}
+            newPercentage={newPercentage} handleNewPercentage={handleNewPercentage}
+            newPrice={newPrice} handleNewPrice={handleNewPrice}
+            addRestaurant={addRestaurant}
+            newResName={newResName} handleNewResName={handleNewResName}
+            newAddress={newAddress} handleNewAddress={handleNewAddress}
+            newPintIII={newPintIII} handleNewPintIII={handleNewPintIII}
+            newPintIV={newPintIV} handleNewPintIV={handleNewPintIV}
+            editRestaurant={editRestaurant}
+      />
+    &lt;/div>
+  )
+}
+
+export default App</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-beerService.html">beerService</a></li><li><a href="module-index.html">index</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Beer">Beer</a></li><li><a href="global.html#BeerForm">BeerForm</a></li><li><a href="global.html#EditBeerForm">EditBeerForm</a></li><li><a href="global.html#EditRestaurantForm">EditRestaurantForm</a></li><li><a href="global.html#Filter">Filter</a></li><li><a href="global.html#Restaurant">Restaurant</a></li><li><a href="global.html#RestaurantForm">RestaurantForm</a></li><li><a href="global.html#Tabs">Tabs</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sun May 07 2023 17:19:51 GMT+0300 (Itä-Euroopan kesäaika)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

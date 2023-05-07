@@ -1,22 +1,32 @@
+/**
+ * This is the main component of the application that renders Tabs and manages the state of the application.
+ * @returns {JSX.Element} - The root element of the application.
+*/
 import './App.css'
 import { useState, useEffect } from 'react'
 import beerService from './services/beerService'
 import Tabs from './components/Tabs'
 
 const App = () => {
-  const [restaurants, setRestaurants] = useState([])
-  const [newName, setNewName] = useState('')
-  const [newType, setNewType] = useState('')
-  const [newBrevery, setNewBrewery] = useState('')
-  const [newPercentage, setNewPercentage] = useState('')
-  const [newPrice, setNewPrice] = useState('')
-  const [filteredName, setFilteredName] = useState('')
+  // State for restaurant-related information.
+  const [restaurants, setRestaurants] = useState([]) // List of all restaurants.
+  const [newResName, setNewResName] = useState('') // Name of a new restaurant.
+  const [newAddress, setNewAddress] = useState('') // Address of a new restaurant.
+  const [newPintIII, setNewPintIII] = useState('') // Pint III of a new restaurant.
+  const [newPintIV, setNewPintIV] = useState('') // Pint IV of a new restaurant.
 
-  const [newResName, setNewResName] = useState('')
-  const [newAddress, setNewAddress] = useState('')
-  const [newPintIII, setNewPintIII] = useState('')
-  const [newPintIV, setNewPintIV] = useState('')
+  // State for beer-related information.
+  const [newName, setNewName] = useState('') // Name of a new beer.
+  const [newType, setNewType] = useState('') // Type of a new beer.
+  const [newBrevery, setNewBrewery] = useState('') // Brewery of a new beer.
+  const [newPercentage, setNewPercentage] = useState('') // Percentage of a new beer.
+  const [newPrice, setNewPrice] = useState('') // Price of a new beer.
+  const [filteredName, setFilteredName] = useState('') // Name to filter beers by.
 
+  /**
+   * This effect is executed only once when the component is mounted. It fetches all restaurants from the database
+   * using the beerService.
+   */
   useEffect(() => {
     beerService
       .getAll()
@@ -25,43 +35,89 @@ const App = () => {
       })
   }, [])
 
+  /**
+   * Sets the state for the new beer name based on the input value
+   * @param {object} event - The event object triggered by the input element
+   */
   const handleNewName = (event) => {
     setNewName(event.target.value)
   }
 
+  /**
+   * Sets the state for the new beer type based on the input value
+   * @param {object} event - The event object triggered by the input element
+   */
   const handleNewType = (event) => {
     setNewType(event.target.value)
   }
 
+  /**
+   * Sets the state for the new beer brewery based on the input value
+   * @param {object} event - The event object triggered by the input element
+   */
   const handleNewBrewery = (event) => {
     setNewBrewery(event.target.value)
   }
 
+  /**
+   * Sets the state for the new beer percentage based on the input value
+   * @param {object} event - The event object triggered by the input element
+   */
   const handleNewPercentage = (event) => {
     setNewPercentage(event.target.value)
   }
 
+  /**
+   * Sets the state for the new beer price based on the input value
+   * @param {object} event - The event object triggered by the input element
+   */
   const handleNewPrice = (event) => {
     setNewPrice(event.target.value)
   }
+
+  /**
+   * Sets the state for the filtered beer name based on the input value
+   * @param {object} event - The event object triggered by the input element
+   */
   const handleFilter = (event) => {
     setFilteredName(event.target.value)
   }
 
+  /**
+   * This function updates the state of the newResName variable when the user types a new name in the input field.
+   * @param {Object} event - The event object that triggered this function.
+   */
   const handleNewResName = (event) => {
     setNewResName(event.target.value)
   }
 
+  /**
+   * This function updates the state of the newAddress variable when the user types a new address in the input field.
+   * @param {Object} event - The event object that triggered this function.
+   */
   const handleNewAddress = (event) => {
     setNewAddress(event.target.value)
   }
+
+  /**
+   * This function updates the state of the newPintIII variable when the user types a new Pint III in the input field.
+   * @param {Object} event - The event object that triggered this function.
+   */
   const handleNewPintIII = (event) => {
     setNewPintIII(event.target.value)
   }
+
+  /**
+   * This function updates the state of the newPintIV variable when the user types a new Pint IV in the input field.
+   * @param {Object} event - The event object that triggered this function.
+   */
   const handleNewPintIV = (event) => {
     setNewPintIV(event.target.value)
   }
 
+  /**
+   * This function resets the input fields for a new beer.
+   */
   const resetFields = () => {
     setNewName('')
     setNewType('')
@@ -70,7 +126,11 @@ const App = () => {
     setNewPrice('')
   }
 
-  //lisää oluen halutulle ravintolalle
+  /**
+   * Adds a beer to the desired restaurant.
+   *
+   * @param {string} id - The ID of the restaurant where the beer will be added.
+   */
   const addBeer = (id) => {
     const restaurantToAdd = restaurants.find(restaurant => restaurant.id === id)
 
@@ -94,7 +154,11 @@ const App = () => {
       })
   }
 
-  //poistaa halutun oluen listalta
+  /**
+   * Deletes a beer from the list.
+   *
+   * @param {string} id - The ID of the beer to be deleted.
+   */
   const deleteFromList = (id) => {
     const restaurantId = restaurants.findIndex(restaurant => restaurant.beers.some(beer => beer.id === id))
 
@@ -113,6 +177,11 @@ const App = () => {
     }
   }
 
+  /**
+   * Updates the price of a beer.
+   *
+   * @param {string} id - The ID of the beer to be edited.
+   */
   const editBeer = (id) => {
     const restaurantToUpdate = restaurants.find(restaurant => restaurant.beers.some(beer => beer.id === id))
     if (!restaurantToUpdate) {
@@ -146,6 +215,9 @@ const App = () => {
       })
   }
 
+  /**
+   * Resets the fields of the new restaurant form.
+   */
   const resetRFields = () => {
     setNewResName('')
     setNewAddress('')
@@ -153,7 +225,11 @@ const App = () => {
     setNewPintIV('')
   }
 
-  //ravintolan lisäys ilman oluita
+  /**
+   * Adds a new restaurant without any beers.
+   *
+   * @param {Event} event - The event that triggered the function.
+   */
   const addRestaurant = (event) => {
     event.preventDefault()
     const restaurantToUpdate = restaurants.find(restaurant => restaurant.name === newResName)
@@ -191,6 +267,11 @@ const App = () => {
     }
   }
 
+  /**
+   * Updates the information of an existing restaurant.
+   *
+   * @param {string} id - The ID of the restaurant to be edited.
+   */
   const editRestaurant = (id) => {
     const restaurantToUpdate = restaurants.find(restaurant => restaurant.id === id)
     if (window.confirm(`${restaurantToUpdate.name} update info?`)) {
@@ -214,19 +295,19 @@ const App = () => {
   return (
     <div>
       <Tabs filteredName={filteredName} handleFilter={handleFilter}
-        list={filteredRestaurants} editBeer={editBeer}
-        deleteBeer={deleteFromList} addBeer={addBeer}
-        newName={newName} handleNewName={handleNewName}
-        newType={newType} handleNewType={handleNewType}
-        newBrewery={newBrevery} handleNewBrewery={handleNewBrewery}
-        newPercentage={newPercentage} handleNewPercentage={handleNewPercentage}
-        newPrice={newPrice} handleNewPrice={handleNewPrice}
-        addRestaurant={addRestaurant}
-        newResName={newResName} handleNewResName={handleNewResName}
-        newAddress={newAddress} handleNewAddress={handleNewAddress}
-        newPintIII={newPintIII} handleNewPintIII={handleNewPintIII}
-        newPintIV={newPintIV} handleNewPintIV={handleNewPintIV}
-        editRestaurant={editRestaurant}
+            list={filteredRestaurants} editBeer={editBeer}
+            deleteBeer={deleteFromList} addBeer={addBeer}
+            newName={newName} handleNewName={handleNewName}
+            newType={newType} handleNewType={handleNewType}
+            newBrewery={newBrevery} handleNewBrewery={handleNewBrewery}
+            newPercentage={newPercentage} handleNewPercentage={handleNewPercentage}
+            newPrice={newPrice} handleNewPrice={handleNewPrice}
+            addRestaurant={addRestaurant}
+            newResName={newResName} handleNewResName={handleNewResName}
+            newAddress={newAddress} handleNewAddress={handleNewAddress}
+            newPintIII={newPintIII} handleNewPintIII={handleNewPintIII}
+            newPintIV={newPintIV} handleNewPintIV={handleNewPintIV}
+            editRestaurant={editRestaurant}
       />
     </div>
   )

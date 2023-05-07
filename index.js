@@ -5,6 +5,14 @@ require('dotenv').config()
 
 const Restaurant = require('./models/beer.js')
 
+/**
+ * Middleware that logs the request method, path, and body to the console.
+ * 
+ * @function
+ * @param {Object} request - The HTTP request object.
+ * @param {Object} response - The HTTP response object.
+ * @param {function} next - The callback function to call next middleware.
+ */
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
   console.log('Path:  ', request.path)
@@ -13,6 +21,14 @@ const requestLogger = (request, response, next) => {
   next()
 }
 
+/**
+ * Middleware that handles errors.
+ * 
+ * @param {Error} error - The error object.
+ * @param {Object} request - The HTTP request object.
+ * @param {Object} response - The HTTP response object.
+ * @param {function} next - The callback function to call next middleware.
+ */
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
 
@@ -25,6 +41,12 @@ const errorHandler = (error, request, response, next) => {
   next(error)
 }
 
+/**
+ * Middleware that handles unkwnown endpoints.
+ * 
+ * @param {Object} request - The HTTP request object
+ * @param {Object} response - The HTTP response object.
+ */
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
@@ -32,16 +54,30 @@ const unknownEndpoint = (request, response) => {
 app.use(cors())
 app.use(express.json())
 app.use(requestLogger)
-//app.use(express.static('build'))
+app.use(express.static('build'))
 
-//kaikki ravintolat
+/**
+ * Route that retrieves all restaurants.
+ * 
+ * @name get/restaurants
+ * @function
+ * @param {Object} request - The HTTP request object.
+ * @param {Object} response - The HTTP response object.
+ */
 app.get('/api/restaurants', (request, response) => {
   Restaurant.find({}).then(restaurants => {
     response.json(restaurants)
   })
 })
 
-//kaikki tietyn ravintolan oluet
+/**
+ * Route that retrieves all beers for a specific restaurant.
+ * 
+ * @name get/restaurants/:id/beers
+ * @function
+ * @param {Object} request - The HTTP request object.
+ * @param {Object} response - The HTTP response object.
+ */
 app.get('/api/restaurants/:id/beers', (request, response) => {
   const { id } = request.params
 
@@ -56,7 +92,15 @@ app.get('/api/restaurants/:id/beers', (request, response) => {
     .catch(error => response.status(500).json({ error: error.message }))
 })
 
-//uusi ravintola ilman oluita
+/**
+ * Route that creates a new restaurant.
+ * 
+ * @name post/restaurants
+ * @function
+ * @param {Object} request - The HTTP request object.
+ * @param {Object} response - The HTTP response object.
+ * @param {function} next - The callback function to call next middleware.
+ */
 app.post('/api/restaurants', (request, response, next) => {
   const body = request.body
 
@@ -74,7 +118,19 @@ app.post('/api/restaurants', (request, response, next) => {
     }).catch(error => next(error))
 })
 
-//uusi olut ravintolalle ravintolan id:n avulla
+/**
+ * Adds a new beer to the restaurant's beer list using the restaurant ID.
+ *
+ * @param {object} req - Express request object
+ * @param {string} req.params.id - ID of the restaurant to add the beer to
+ * @param {object} req.body - Beer object to add to the list
+ * @param {string} req.body.name - Name of the beer
+ * @param {string} req.body.type - Type of the beer
+ * @param {string} req.body.brewery - Name of the brewery that makes the beer
+ * @param {number} req.body.percentage - Alcohol percentage of the beer
+ * @param {number} req.body.price - Price of the beer
+ * @param {object} res - Express response object
+ */
 app.post('/api/restaurants/:id/beers', (req, res) => {
   const { id } = req.params
   const { name, type, brewery, percentage, price } = req.body
@@ -104,7 +160,12 @@ app.post('/api/restaurants/:id/beers', (req, res) => {
     .catch(error => res.status(500).json({ error: error.message }))
 })
 
-//kaikista ravintoloista kaikki oluet
+/**
+ * Gets all the beers from all the restaurants.
+ *
+ * @param {object} request - Express request object
+ * @param {object} response - Express response object
+ */
 app.get('/api/restaurants/beers', (request, response) => {
   Restaurant.find({})
     .then((restaurants) => {
@@ -117,7 +178,15 @@ app.get('/api/restaurants/beers', (request, response) => {
     .catch(error => response.status(500).json({ error: error.message }))
 })
 
-//poistaa halutusta ravintolasta halutun oluen
+/**
+ * Deletes a beer from a restaurant's beer list using the restaurant ID and beer ID.
+ *
+ * @param {object} request - Express request object
+ * @param {string} request.params.restaurantId - ID of the restaurant
+ * @param {string} request.params.beerId - ID of the beer to delete
+ * @param {object} response - Express response object
+ * @param {function} next - Express next middleware function
+ */
 app.delete('/api/restaurants/:restaurantId/beers/:beerId', (request, response, next) => {
   const { restaurantId, beerId } = request.params
 
@@ -144,7 +213,17 @@ app.delete('/api/restaurants/:restaurantId/beers/:beerId', (request, response, n
     .catch(error => next(error))
 })
 
-//päivittää ravintolan tuopin tiedot
+/**
+ * Updates a restaurant's pint III and pint IV details using the restaurant ID.
+ *
+ * @param {object} req - Express request object
+ * @param {string} req.params.id - ID of the restaurant to update
+ * @param {object} req.body - Object containing the new pint III and pint IV details
+ * @param {number} req.body.pintIII - New pint III details
+ * @param {number} req.body.pintIV - New pint IV details
+ * @param {object} res - Express response object
+ * @param {function} next - Express next middleware function
+ */
 app.put('/api/restaurants/:id', (req, res, next) => {
   const { id } = req.params
   const { pintIII, pintIV } = req.body
@@ -167,7 +246,17 @@ app.put('/api/restaurants/:id', (req, res, next) => {
     .catch(error => next(error))
 })
 
-//päivittää oluen tiedot
+/**
+ * Updates a beer's price using the restaurant ID and beer ID.
+ *
+ * @param {object} req - Express request object
+ * @param {string} req.params.id - ID of the restaurant
+ * @param {string} req.params.beerId - ID of the beer to update
+ * @param {object} req.body - Object containing the new price of the beer
+ * @param {number} req.body.price - New price of the beer
+ * @param {object} res - Express response object
+ * @param {function} next - Express next middleware function
+ */
 app.put('/api/restaurants/:id/beers/:beerId', (req, res, next) => {
   const { id, beerId } = req.params
   const { price } = req.body

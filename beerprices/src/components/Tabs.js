@@ -7,6 +7,38 @@ import Filter from './Filter'
 import EditBeerForm from './EditBeerForm'
 import EditRestaurantForm from './EditRestaurantForm'
 
+/**
+ * Component for rendering a tabbed interface with options to view all places and add a bar or restaurant.
+ * 
+ * @param {Object} props - The props object containing methods and data for rendering the component.
+ * @param {Array} props.list - The array of restaurant objects to display.
+ * @param {string} props.filteredName - The current value of the search filter.
+ * @param {function} props.handleFilter - The function to handle changes to the search filter.
+ * @param {function} props.addRestaurant - The function to handle adding a new restaurant.
+ * @param {string} props.newResName - The current value of the new restaurant name input field.
+ * @param {function} props.handleNewResName - The function to handle changes to the new restaurant name input field.
+ * @param {string} props.newAddress - The current value of the new restaurant address input field.
+ * @param {function} props.handleNewAddress - The function to handle changes to the new restaurant address input field.
+ * @param {string} props.newPintIII - The current value of the new restaurant's third pint input field.
+ * @param {function} props.handleNewPintIII - The function to handle changes to the new restaurant's third pint input field.
+ * @param {string} props.newPintIV - The current value of the new restaurant's fourth pint input field.
+ * @param {function} props.handleNewPintIV - The function to handle changes to the new restaurant's fourth pint input field.
+ * @param {function} props.editRestaurant - The function to handle editing an existing restaurant.
+ * @param {function} props.newName - The current value of the new beer name input field.
+ * @param {function} props.handleNewName - The function to handle changes to the new beer name input field.
+ * @param {function} props.newType - The current value of the new beer type input field.
+ * @param {function} props.handleNewType - The function to handle changes to the new beer type input field.
+ * @param {function} props.newBrewery - The current value of the new beer brewery input field.
+ * @param {function} props.handleNewBrewery - The function to handle changes to the new beer brewery input field.
+ * @param {function} props.newPercentage - The current value of the new beer percentage input field.
+ * @param {function} props.handleNewPercentage - The function to handle changes to the new beer percentage input field.
+ * @param {function} props.newPrice - The current value of the new beer price input field.
+ * @param {function} props.handleNewPrice - The function to handle changes to the new beer price input field.
+ * @param {function} props.addBeer - The function to handle adding a new beer to a restaurant.
+ * @param {function} props.editBeer - The function to handle editing an existing beer.
+ * @param {function} props.deleteBeer - The function to handle deleting a beer from a restaurant.
+ * @returns {JSX.Element} - The JSX code to render the component.
+ */
 function Tabs(props) {
   const [toggleState, setToggleState] = useState(1)
   const [showBeerForm, setShowBeerForm] = useState(false)
@@ -17,10 +49,20 @@ function Tabs(props) {
   const [showEditRestaurantForm, setShowEditRestaurantForm] = useState(false)
 
 
+  /**
+   * Set the toggle state to the given index.
+   * 
+   * @param {number} index - The index to set the toggle state to.
+   */
   const toggleTab = (index) => {
     setToggleState(index)
   }
 
+  /**
+   * Handle click events for restaurants.
+   * 
+   * @param {number} id - The ID of the restaurant being clicked.
+   */
   const handleRestaurantClick = (id) => {
     if (id === selectedRestaurantId) {
       setSelectedRestaurantId(null)
@@ -31,6 +73,11 @@ function Tabs(props) {
     }
   }
 
+  /**
+   * Handle click events for beers.
+   * 
+   * @param {number} id - The ID of the beer being clicked.
+   */
   const handleBeerClick = (id) => {
     if (id === selectedBeerId) {
       setSelectedBeerId(null)
@@ -41,6 +88,10 @@ function Tabs(props) {
     }
   }
 
+  /**
+   * Handle click events for restaurant edits.
+   * @param {number} id - The ID of the restaurant being edited.
+   */
   const handleRestaurantEditClick = (id) => {
     if (id === selectedPintId) {
       setSelectedPintId(null)
