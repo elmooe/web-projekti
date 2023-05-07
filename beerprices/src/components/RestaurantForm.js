@@ -1,15 +1,18 @@
 const RestaurantForm = ({ addRestaurant, newResName, handleNewResName, newAddress, handleNewAddress, newPintIII, handleNewPintIII, newPintIV, handleNewPintIV }) => {
 
   return (
-      <form onSubmit={addRestaurant}>
+      <form className='restaurantForm' onSubmit={addRestaurant}>
       <div>
-        name: <input value={newResName} onChange={handleNewResName} />
+        name: <input className="inputContainer" value={newResName} onChange={handleNewResName} />
       </div>
       <div>
-        address: <input value={newAddress} onChange={handleNewAddress} />
+        address: <input className="inputContainer" value={newAddress} onChange={handleNewAddress} />
       </div>
       <div>
-        pint III: <input value={newPintIII} onChange={handleNewPintIII} /> pint IV: <input value={newPintIV} onChange={handleNewPintIV} />
+        pint III: <input className="inputContainer" value={newPintIII} onChange={handleNewPintIII} />
+      </div>
+      <div>
+        pint IV: <input className="inputContainer" value={newPintIV} onChange={handleNewPintIV} />
       </div>
       <div>
         <button type="submit">add</button>

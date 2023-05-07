@@ -108,6 +108,9 @@ function Tabs(props) {
         </div>
         <div className={toggleState === 2 ? "content  active-content" : "content"} >
           <h2 className='contenth2'>Add a bar or a restaurant</h2>
+          <div className="hr-container">
+            <hr className="hr" />
+          </div>
           <RestaurantForm addRestaurant={props.addRestaurant}
             newResName={props.newResName} handleNewResName={props.handleNewResName}
             newAddress={props.newAddress} handleNewAddress={props.handleNewAddress}

@@ -115,12 +115,7 @@ button {
   color: #8758ff;
   padding: 0px 0 5px 0px;
 }
-.content hr {
-  width: 100px;
-  height: 2px;
-  background: #222;
-  margin-bottom: 5px;
-}
+
 .content p {
   width: 100%;
   height: 100%;
@@ -196,4 +191,44 @@ button {
 .small {
   height: 40px;
   width: 70px;  
+}
+
+.restaurantForm {
+  border-radius: 5px;
+  box-sizing: border-box;
+  padding: 20px;
+  align-items: center;
+  margin: auto;
+  width: 90%;
+  border: 2px solid #8758ff;
+  border-top: none;
+}
+
+.beerForm {
+  border-radius: 5px;
+  box-sizing: border-box;
+  padding: 10px;
+  align-items: center;
+  margin: auto;
+  margin-bottom: 10px;
+  border: 2px solid #8758ff;
+  border-top: none;
+}
+
+.inputContainer {
+  height: 30px;
+  display: flex;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.hr-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.hr {
+  border: none;
+  border-top: 1px solid black;
+  width: 80%;
 }

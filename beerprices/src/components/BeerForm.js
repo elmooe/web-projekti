@@ -2,22 +2,22 @@ const BeerForm = ({ restaurant, addBeer, newName, handleNewName, newType, handle
                     newBrewery, handleNewBrewery, newPercentage, handleNewPercentage,
                     newPrice, handleNewPrice }) => {
     return (
-      <form onSubmit={() => addBeer(restaurant.id)}>
+      <form className='beerForm' onSubmit={() => addBeer(restaurant.id)}>
         <div>
         <h4>Add new beer</h4>
-          name: <input value={newName} onChange={handleNewName} />
+          name: <input className="inputContainer" value={newName} onChange={handleNewName} />
         </div>
         <div>
-          type: <input value={newType} onChange={handleNewType} />
+          type: <input className="inputContainer" value={newType} onChange={handleNewType} />
         </div>
         <div>
-          brewery: <input value={newBrewery} onChange={handleNewBrewery} />
+          brewery: <input className="inputContainer" value={newBrewery} onChange={handleNewBrewery} />
         </div>
          <div>
-          percentage: <input value={newPercentage} onChange={handleNewPercentage} />
+          percentage: <input className="inputContainer" value={newPercentage} onChange={handleNewPercentage} />
         </div>
          <div>
-          price: <input value={newPrice} onChange={handleNewPrice} />
+          price: <input className="inputContainer" value={newPrice} onChange={handleNewPrice} />
         </div>
         <div>
           <button type="submit">add</button>
